@@ -1,0 +1,22 @@
+---
+title: "LCD Stations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Download Stations
+
+### Test
+```{r}
+library(rnoaa)
+station_test <- lcd(station = "02521099999", year = 2005)
+
+```
+
+
+## Preprocess Data
+### Create tibble
+### Arrange/ sort data

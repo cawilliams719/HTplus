@@ -1,0 +1,34 @@
+---
+title: "NLCD Raster"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Download National Land Cover Dataset (NLCD)
+
+```{r}
+library(FedData)
+library(sp)
+rst_test <- get_nlcd(template = landcover_2005_vote, label = test_nlcd, year = 2005, dataset = landcover, raw.dir = "C:/Users/Caroline/Documents/Projects/HTplus/tests")
+```
+
+```{r}
+library(utils)
+library(raster)
+
+
+test_url <- "ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/landcover_2005_vote.zip"
+
+my_dir <- "C:/Users/Caroline/Documents/Projects/HTplus/tests"
+tmp <- tempfile(tmpdir = my_dir, fileext = ".zip")
+download.file(test_url, tmp)
+unzip(tmp,exdir = my_dir)
+unlink(tmp)
+
+fp <- list.files(path = my_dir, full.names = TRUE, pattern = "nlcd_sample_2005")
+fp <- gsub("/", "\\\\", fp)
+```
+
