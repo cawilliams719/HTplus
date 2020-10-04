@@ -12,11 +12,39 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Test
 ```{r}
 library(rnoaa)
-station_test <- lcd(station = "02521099999", year = 2005)
+library(dplyr)
+library(tidyr)
+library(vctrs)
 
+station_test <- lcd(station = "02521099999", year = 2005)
+st <- as_tibble(station_test)
+
+lcd_stat <- list("WBAN:54779", "WBAN:14737", "WBAN:14751", "WBAN:54782",
+                 "WBAN:54737", "WBAN:14711", "WBAN:64756", "WBAN:94723",
+                 "WBAN:14757", "WBAN:14712", "WBAN:14770", "WBAN:54785",
+                 "WBAN:54793", "WBAN:14792", "WBAN:14894", "WBAN:14777",
+                 "WBAN:14778", "WBAN:54704", "WBAN:94746", "WBAN:14763",
+                 "WBAN:14702", "WBAN:04780", "WBAN:94704", "WBAN:54778",
+                 "WBAN:54768", "WBAN:94060", "WBAN:14735", "WBAN:14771",
+                 "WBAN:14768", "WBAN:14750", "WBAN:54740", "WBAN:54773",
+                 "WBAN:54772", "WBAN:94847", "WBAN:94815", "WBAN:14833",
+                 "WBAN:14836", "WBAN:14826", "WBAN:14837", "WBAN:94994",
+                 "WBAN:54903", "WBAN:94814", "WBAN:14898", "WBAN:14897",
+                 "WBAN:14841", "WBAN:94893", "WBAN:94973", "WBAN:13884",
+                 "WBAN:93845", "WBAN:63829", "WBAN:63828", "WBAN:13869",
+                 "WBAN:13870", "WBAN:03822", "WBAN:93842", "WBAN:03813",
+                 "WBAN:53874", "WBAN:53838", "WBAN:93801", "WBAN:93846",
+                 "WBAN:53850", "WBAN:13886", "WBAN:03870", "WBAN:53870",
+                 "WBAN:13881")
 ```
 
+```{r}
+#test
+library(rnoaa)
+stations <- list("02521099999", "02571099999") 
 
-## Preprocess Data
-### Create tibble
-### Arrange/ sort data
+for (i in stations) {
+  t <- lcd(station = i, year = 2005)
+}
+
+```
