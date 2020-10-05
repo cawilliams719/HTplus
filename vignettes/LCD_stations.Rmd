@@ -9,6 +9,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Download Stations
 
+To Do:
+1. Figure out how to iterate, i.e. all stations x 10 years or one station for the 10 years
+2. come up with more efficient methods
+3. find way of accessing stations that are resulting in an error
+
 ### Test
 ```{r}
 library(rnoaa)
@@ -17,11 +22,7 @@ library(tidyr)
 library(vctrs)
 
 # List of LCD stations and their respective station numbers
-lcd_stat <- list("99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
-                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
-                 "72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
-                 "99999954782", # HERITAGE FIELD AIRPORT, PA US
-                 "99999954737", # LANCASTER AIRPORT, PA US
+lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "72511514711", # MIDDLETOWN HARRISBURG INTERNATIONAL AIRPORT, PA US
                  "99999964756", # MILLBROOK 3 W, NY US
                  "72520094823", # PITTSBURGH ASOS, PA US
@@ -36,7 +37,6 @@ lcd_stat <- list("99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
                  "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
                  "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
                  "72510094746", # WORCESTER, MA US
-                 "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
                  "99999914702", # BEDFORD HANSCOM FIELD, MA US
                  "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
                  "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
@@ -56,7 +56,6 @@ lcd_stat <- list("99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
                  "72539014836", # LANSING CAPITAL CITY AIRPORT, MI US
                  "72637014826", # FLINT FCWOS, MI US
                  "72641014837", # MADISON DANE CO REGIONAL AIRPORT, WI US
-                 "99999994994", # BOSCOBEL AIRPORT, WI US
                  "99999954903", # NECEDAH 5 WNW, WI US
                  "72638094814", # HOUGHTON LAKE ROSCOMMON CO AIRPORT, MI US
                  "72645014898", # GREEN BAY A S INTERNATIONAL AIRPORT, WI US
@@ -84,8 +83,27 @@ lcd_stat <- list("99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
                  "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
 
 # iterate through lcd function from rnoaa package using lapply
-m_2005 <- lapply(lcd_stat, function(x) {
-  lcd(x, year = 2005)
-  as_tibble(x)
+
+m_2006 <- lapply(lcd_stat, function(x) {
+  lcd(x, year = 2006)
 })
+
+# Try to iterate through m_2005
+#test <- as_tibble(m_2005[[1]])
+#for (i in m_2005) {
+#  as_tibble(i)
+#  return()
+#}
 ```
+
+
+# Cant find stations
+# 2005
+"74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US 
+"99999994994", # BOSCOBEL AIRPORT, WI US
+
+# 2006
+"99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
+"72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
+"99999954782", # HERITAGE FIELD AIRPORT, PA US
+"99999954737", # LANCASTER AIRPORT, PA US
