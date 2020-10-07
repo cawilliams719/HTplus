@@ -192,9 +192,24 @@ lcd_test <- list("72511814751",
                  "72520094823")
 
 m_test <- lapply(lcd_test, function(x) {
-  o <- lcd(x, year = 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
-  paste0("LCD_", stat_name, "_2005_2014") = return(o)
+  lcd(x, year = 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014) # runs but still only returns 2005
 })
 
+t <- m_test[[1]]
+paste0("LCD_", stat_name[[1]], "_2005_2014")
+
+lapply(m_test, function(x) {
+  assign(x, paste0("LCD_", stat_name[[1]], "_2005_2014"))
+})
+
+# Trying different menthods of sorting data
+LCD_new <- as_tibble(m_test[[1]]) 
+LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature)
+
+LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(desc(date))
+
+LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0)
+
+LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
 ```
 
