@@ -35,8 +35,14 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "72427514894", # WHEELING OHIO CO AIRPORT, WV US
                  "72513014777", # WILKES BARRE SCRANTON INTERNATIONAL AIRPORT, PA US
                  "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
+                 "99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
+                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
+                 "99999954782", # HERITAGE FIELD AIRPORT, PA US
+                 "99999954737", # LANCASTER AIRPORT, PA US
                  "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
                  "72510094746", # WORCESTER, MA US
+                 "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
+                 "99999994994", # BOSCOBEL AIRPORT, WI US
                  "99999914702", # BEDFORD HANSCOM FIELD, MA US
                  "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
                  "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
@@ -84,8 +90,8 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
 
 # iterate through lcd function from rnoaa package using lapply
 
-m_2006 <- lapply(lcd_stat, function(x) {
-  lcd(x, year = 2006)
+m_2005 <- lapply(lcd_stat, function(x) {
+  lcd(x, year = 2005)
 })
 
 # Try to iterate through m_2005
@@ -96,14 +102,99 @@ m_2006 <- lapply(lcd_stat, function(x) {
 #}
 ```
 
+```{r}
+# Finding which data is present/ absent in the 10 years of interest
+# This thesis is already completed. At the time of completion all data was available for all to years
+# interestingly, some data is now unavailable
 
-# Cant find stations
-# 2005
-"74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US 
-"99999994994", # BOSCOBEL AIRPORT, WI US
+lcd_stat <- list("72511814751", # all 10 years
+                 "72511514711", # missing 2011-2014
+                 "99999964756", # all 10 years
+                 "72520094823", # all 10 years
+                 "72503614757", # all 10 years
+                 "72510314712", # READING REGIONAL AIRPORT, PA US
+                 "72514014778", # SELINSGROVE PENN VALLEY AIRPORT, PA US
+                 "99999954785", # SOMERSET AIRPORT, NJ US
+                 "99999954793", # SUSSEX AIRPORT, NJ US
+                 "72409514792", # TRENTON MERCER AIRPORT, NJ US
+                 "72427514894", # WHEELING OHIO CO AIRPORT, WV US
+                 "72513014777", # WILKES BARRE SCRANTON INTERNATIONAL AIRPORT, PA US
+                 "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
+                 "99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
+                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
+                 "99999954782", # HERITAGE FIELD AIRPORT, PA US
+                 "99999954737", # LANCASTER AIRPORT, PA US
+                 "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
+                 "72510094746", # WORCESTER, MA US
+                 "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
+                 "99999994994", # BOSCOBEL AIRPORT, WI US
+                 "99999914702", # BEDFORD HANSCOM FIELD, MA US
+                 "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
+                 "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
+                 "99999954778", # PENN YAN AIRPORT, NY US
+                 "99999954768", # NORTH ADAMS HARRIMAN AIRPORT, MA US
+                 "99999994723", # LAWRENCE MUNICIPAL AIRPORT, MA US
+                 "72518014735", # ALBANY INTERNATIONAL AIRPORT, NY US
+                 "72519014771", # SYRACUSE HANCOCK INTERNATIONAL AIRPORT, NY US
+                 "72529014768", # ROCHESTER GREATER INTERNATIONAL, NY US
+                 "72518514750", # GLENS FALLS AIRPORT, NY US
+                 "99999954740", # SPRINGFIELD HARTNESS STATE AIRPORT, VT US
+                 "99999954773", # FULTON OSWEGO CO AIRPORT, NY US
+                 "99999954772", # FRYEBURG EASTERN SLOPES REGL AIRPORT, ME US
+                 "72537094847", # DETROIT METRO AIRPORT, MI US
+                 "99999994815", # KALAMAZOO BATTLE CREEK INTERNATIONAL AIRPORT, MI US
+                 "72539514833", # JACKSON REYNOLDS FIELD, MI US
+                 "72539014836", # LANSING CAPITAL CITY AIRPORT, MI US
+                 "72637014826", # FLINT FCWOS, MI US
+                 "72641014837", # MADISON DANE CO REGIONAL AIRPORT, WI US
+                 "99999954903", # NECEDAH 5 WNW, WI US
+                 "72638094814", # HOUGHTON LAKE ROSCOMMON CO AIRPORT, MI US
+                 "72645014898", # GREEN BAY A S INTERNATIONAL AIRPORT, WI US
+                 "72646314897", # WAUSAU ASOS, WI US
+                 "72734714841", # PELLSTON REGIONAL AIRPORT, MI US
+                 "99999994893", # IRON MOUNTAIN FORD AIRPORT, MI US
+                 "99999994973", # HAYWARD MUNICIPAL AIRPORT, WI US
+                 "72221513884", # CRESTVIEW BOB SIKES AIRPORT, FL US
+                 "72216693845", # VALDOSTA REGIONAL AIRPORT, GA US
+                 "99999963829", # NEWTON 11 SW, GA US
+                 "99999963828", # NEWTON 8 W, GA US
+                 "72216013869", # ALBANY SW GEORGIA REGIONAL AIRPORT, GA US
+                 "72316013870", # ALMA BACON CO AIRPORT, GA US
+                 "72207003822", # SAVANNAH INTERNATIONAL AIRPORT, GA US
+                 "72225593842", # COLUMBUS METROPOLITAN AIRPORT, GA US
+                 "72217003813", # MACON MIDDLE GA REGIONAL AIRPORT, GA US
+                 "99999953874", # GREENWOOD CO AIRPORT, SC US
+                 "99999953838", # GAINESVILLE LEE GILMER MEMORIAL AIRPORT, GA US
+                 "72320093801", # ROME R B RUSSELL AIRPORT, GA US
+                 "72319093846", # ANDERSON FAA AIRPORT, SC US
+                 "99999953850", # CLEMSON OCONEE CO AIRPORT, SC US
+                 "72311913886", # GREENVILLE DOWNTOWN AIRPORT, SC US
+                 "72312003870", # GRNVL SPART INTERNATIONAL AIRPORT, SC US
+                 "99999953870", # GASTONIA MUNICIPAL AIRPORT, NC US
+                 "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
 
-# 2006
-"99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
-"72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
-"99999954782", # HERITAGE FIELD AIRPORT, PA US
-"99999954737", # LANCASTER AIRPORT, PA US
+# testing one file for all ten years
+
+m_worcester <- lapply("72510094746", function(x) {
+  lcd(x, year = 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
+})
+```
+
+## Testing
+```{r}
+
+stat_name <- list("HARRISBURG_CAPITAL_CITY_AIRPORT_PA",
+                  "MILLBROOK_3_W_NY",
+                  "PITTSBURGH ASOS_PA")
+                 
+lcd_test <- list("72511814751", 
+                 "99999964756", 
+                 "72520094823")
+
+m_test <- lapply(lcd_test, function(x) {
+  o <- lcd(x, year = 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
+  paste0("LCD_", stat_name, "_2005_2014") = return(o)
+})
+
+```
+
