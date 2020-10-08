@@ -1,6 +1,10 @@
 ---
-title: "NLCD Raster"
-output: html_document
+title: "NLCD Raster Download"
+author: "Caroline Williams"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -12,7 +16,7 @@ The NLCD is stored as a GeoTIFF with a spatial resolution of 30 by 30 meters. It
 ## Download National Land Cover Dataset (NLCD)
 The following code is used to iterate through NLCD data (downloaded from: ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/) .zip files. The for loop downloads each .zip file, unzips it, and deletes the original .zip file folder. This is accomplished for the years 2005 to 2014. The packages FedData, sp, utils, and raster are used.
 
-```{r}
+```{r, eval = FALSE}
 # Load Packages
 library(FedData)
 library(sp)

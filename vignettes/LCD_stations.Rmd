@@ -1,6 +1,10 @@
 ---
 title: "LCD Stations"
-output: html_document
+author: "Caroline Williams"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +24,7 @@ library(rnoaa)
 library(dplyr)
 library(tidyr)
 library(vctrs)
+library(plyr)
 
 # List of LCD stations and their respective station numbers
 lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
@@ -90,8 +95,17 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
 
 # iterate through lcd function from rnoaa package using lapply
 
-m_2005 <- lapply(lcd_stat, function(x) {
-  lcd(x, year = 2005)
+lcd_data <- lapply(lcd_stat, function(x) {
+  as_tibble(rbind.fill(lcd(x, year = 2005),
+                       lcd(x, year = 2006),
+                       lcd(x, year = 2007),
+                       lcd(x, year = 2008),
+                       lcd(x, year = 2009),
+                       lcd(x, year = 2010),
+                       lcd(x, year = 2011),
+                       lcd(x, year = 2012),
+                       lcd(x, year = 2013),
+                       lcd(x, year = 2014)))
 })
 
 # Try to iterate through m_2005
