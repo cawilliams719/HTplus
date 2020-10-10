@@ -23,7 +23,7 @@ To Do (UPDATED 10/9/20):
 3. make a function
 
 ### Test 1
-```{r}
+```{r, eval = FALSE}
 library(rnoaa)
 library(dplyr)
 library(tidyr)
@@ -120,7 +120,7 @@ lcd_data <- lapply(lcd_stat, function(x) {
 #}
 ```
 
-```{r}
+```{r, eval = FALSE}
 # Finding which data is present/ absent in the 10 years of interest
 # This thesis is already completed. At the time of completion all data was available for all to years
 # interestingly, some data is now unavailable
@@ -198,7 +198,7 @@ m_worcester <- lapply("72510094746", function(x) {
 })
 ```
 ### Test 1.b
-```{r}
+```{r, eval = FALSE}
 library(rnoaa)
 library(dplyr)
 library(tidyr)
@@ -268,7 +268,7 @@ lcd_data <- lapply(lcd_stat, function(x) {
 ```
 
 ## Test 2
-```{r}
+```{r, eval = FALSE}
 # Here is a test example of looping through stations for all 10 years
 # The output is a list of three tibbles corresponding to each input station
 stat_name <- list("HARRISBURG_CAPITAL_CITY_AIRPORT_PA",
