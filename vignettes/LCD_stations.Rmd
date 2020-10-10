@@ -126,66 +126,66 @@ lcd_stat <- list("72511814751", # all 10 years
                  "99999964756", # all 10 years
                  "72520094823", # all 10 years
                  "72503614757", # all 10 years
-                 "72510314712", # READING REGIONAL AIRPORT, PA US
-                 "72514014778", # SELINSGROVE PENN VALLEY AIRPORT, PA US
-                 "99999954785", # SOMERSET AIRPORT, NJ US
-                 "99999954793", # SUSSEX AIRPORT, NJ US
-                 "72409514792", # TRENTON MERCER AIRPORT, NJ US
-                 "72427514894", # WHEELING OHIO CO AIRPORT, WV US
-                 "72513014777", # WILKES BARRE SCRANTON INTERNATIONAL AIRPORT, PA US
-                 "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
-                 "99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
-                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
-                 "99999954782", # HERITAGE FIELD AIRPORT, PA US
-                 "99999954737", # LANCASTER AIRPORT, PA US
-                 "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
-                 "72510094746", # WORCESTER, MA US
-                 "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
-                 "99999994994", # BOSCOBEL AIRPORT, WI US
-                 "99999914702", # BEDFORD HANSCOM FIELD, MA US
-                 "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
-                 "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
-                 "99999954778", # PENN YAN AIRPORT, NY US
-                 "99999954768", # NORTH ADAMS HARRIMAN AIRPORT, MA US
-                 "99999994723", # LAWRENCE MUNICIPAL AIRPORT, MA US
-                 "72518014735", # ALBANY INTERNATIONAL AIRPORT, NY US
-                 "72519014771", # SYRACUSE HANCOCK INTERNATIONAL AIRPORT, NY US
-                 "72529014768", # ROCHESTER GREATER INTERNATIONAL, NY US
-                 "72518514750", # GLENS FALLS AIRPORT, NY US
-                 "99999954740", # SPRINGFIELD HARTNESS STATE AIRPORT, VT US
-                 "99999954773", # FULTON OSWEGO CO AIRPORT, NY US
-                 "99999954772", # FRYEBURG EASTERN SLOPES REGL AIRPORT, ME US
-                 "72537094847", # DETROIT METRO AIRPORT, MI US
-                 "99999994815", # KALAMAZOO BATTLE CREEK INTERNATIONAL AIRPORT, MI US
-                 "72539514833", # JACKSON REYNOLDS FIELD, MI US
-                 "72539014836", # LANSING CAPITAL CITY AIRPORT, MI US
-                 "72637014826", # FLINT FCWOS, MI US
-                 "72641014837", # MADISON DANE CO REGIONAL AIRPORT, WI US
-                 "99999954903", # NECEDAH 5 WNW, WI US
-                 "72638094814", # HOUGHTON LAKE ROSCOMMON CO AIRPORT, MI US
-                 "72645014898", # GREEN BAY A S INTERNATIONAL AIRPORT, WI US
-                 "72646314897", # WAUSAU ASOS, WI US
-                 "72734714841", # PELLSTON REGIONAL AIRPORT, MI US
-                 "99999994893", # IRON MOUNTAIN FORD AIRPORT, MI US
-                 "99999994973", # HAYWARD MUNICIPAL AIRPORT, WI US
-                 "72221513884", # CRESTVIEW BOB SIKES AIRPORT, FL US
-                 "72216693845", # VALDOSTA REGIONAL AIRPORT, GA US
-                 "99999963829", # NEWTON 11 SW, GA US
-                 "99999963828", # NEWTON 8 W, GA US
-                 "72216013869", # ALBANY SW GEORGIA REGIONAL AIRPORT, GA US
-                 "72316013870", # ALMA BACON CO AIRPORT, GA US
-                 "72207003822", # SAVANNAH INTERNATIONAL AIRPORT, GA US
-                 "72225593842", # COLUMBUS METROPOLITAN AIRPORT, GA US
-                 "72217003813", # MACON MIDDLE GA REGIONAL AIRPORT, GA US
-                 "99999953874", # GREENWOOD CO AIRPORT, SC US
-                 "99999953838", # GAINESVILLE LEE GILMER MEMORIAL AIRPORT, GA US
-                 "72320093801", # ROME R B RUSSELL AIRPORT, GA US
-                 "72319093846", # ANDERSON FAA AIRPORT, SC US
-                 "99999953850", # CLEMSON OCONEE CO AIRPORT, SC US
-                 "72311913886", # GREENVILLE DOWNTOWN AIRPORT, SC US
-                 "72312003870", # GRNVL SPART INTERNATIONAL AIRPORT, SC US
-                 "99999953870", # GASTONIA MUNICIPAL AIRPORT, NC US
-                 "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
+                 "72510314712", # all 10 years
+                 "72514014778", # all 10 years
+                 "99999954785", # missing 2006-2014
+                 "99999954793", # missing 2006-2014
+                 "72409514792", # all 10 years
+                 "72427514894", # all 10 years
+                 "72513014777", # all 10 years
+                 "72514014778", # all 10 years
+                 "99999954779", # all 10 years
+                 "72517014737", # all 10 years
+                 "99999954782", # missing 2006-2014
+                 "99999954737", # missing 2006-2014
+                 "99999954704", # missing 2006-2014
+                 "72510094746", # all 10 years
+                 "74410414763", # missing 2005
+                 "99999994994", # missing all 10 years
+                 "99999914702", # missing 2006-2014
+                 "72510704780", # all 10 years
+                 "72498894704", # all 10 years
+                 "99999954778", # missing 2006-2014
+                 "99999954768", # missing 2006-2014
+                 "99999994723", # missing 2006-2014
+                 "72518014735", # all 10 years
+                 "72519014771", # all 10 years
+                 "72529014768", # all 10 years
+                 "72518514750", # missing 2011-2014
+                 "99999954740", # missing 2006-2014
+                 "99999954773", # missing 2006-2014
+                 "99999954772", # missing 2006-2014
+                 "72537094847", # all 10 years
+                 "99999994815", # missing 2006-2014
+                 "72539514833", # all 10 years
+                 "72539014836", # all 10 years
+                 "72637014826", # all 10 years
+                 "72641014837", # all 10 years
+                 "99999954903", # all 10 years
+                 "72638094814", # all 10 years
+                 "72645014898", # all 10 years
+                 "72646314897", # all 10 years
+                 "72734714841", # all 10 years
+                 "99999994893", # missing 2006-2014
+                 "99999994973", # missing 2006-2014
+                 "72221513884", # missing 2006-2014
+                 "72216693845", # all 10 years
+                 "99999963829", # all 10 years
+                 "99999963828", # all 10 years
+                 "72216013869", # all 10 years
+                 "72316013870", # missing 2008
+                 "72207003822", # all 10 years
+                 "72225593842", # all 10 years
+                 "72217003813", # all 10 years
+                 "99999953874", # missing 2006-2014
+                 "99999953838", # missing 2006-2014
+                 "72320093801", # all 10 years
+                 "72319093846", # missing 2008
+                 "99999953850", # missing 2006-2014
+                 "72311913886", # all 10 years
+                 "72312003870", # all 10 years
+                 "99999953870", # missing 2006-2014
+                 "72314013881") # all 10 years
 
 # testing one file for all ten years
 
