@@ -16,13 +16,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Download Stations
+Note that this download process is still in a testing phase. The function to iterate through downloading station data works, however data that was available several months ago is now unavailable. Therefore, I plan to create an additional code reading in csv files that are downloaded directly. I will than work on sorting and organizing this dataset for my analysis. 
 
 To Do (UPDATED 10/9/20):
 1. find way of accessing stations that are resulting in an error
 2. Perhaps start with just one cluster to analyze than repeat for other cluster?
-3. make a function
 
-### Test 1
+## Test 1
+### Test 1.a
 ```{r, eval = FALSE}
 library(rnoaa)
 library(dplyr)
@@ -98,7 +99,8 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
 
 # iterate through lcd function from rnoaa package using lapply
-
+# this code chunk has been converted into a function
+# please see lcd_data in HTplus package for documentation
 lcd_data <- lapply(lcd_stat, function(x) {
   as_tibble(rbind.fill(lcd(x, year = 2005),
                        lcd(x, year = 2006),
@@ -111,15 +113,9 @@ lcd_data <- lapply(lcd_stat, function(x) {
                        lcd(x, year = 2013),
                        lcd(x, year = 2014)))
 })
-
-# Try to iterate through m_2005
-#test <- as_tibble(m_2005[[1]])
-#for (i in m_2005) {
-#  as_tibble(i)
-#  return()
-#}
 ```
 
+#### Identifying stations that are missing certain years of interest
 ```{r, eval = FALSE}
 # Finding which data is present/ absent in the 10 years of interest
 # This thesis is already completed. At the time of completion all data was available for all to years
@@ -191,12 +187,8 @@ lcd_stat <- list("72511814751", # all 10 years
                  "99999953870", # missing 2006-2014
                  "72314013881") # all 10 years
 
-# testing one file for all ten years
-
-m_worcester <- lapply("72510094746", function(x) {
-  lcd(x, year = 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014)
-})
 ```
+
 ### Test 1.b
 ```{r, eval = FALSE}
 library(rnoaa)
@@ -244,8 +236,6 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "72312003870", # GRNVL SPART INTERNATIONAL AIRPORT, SC US
                  "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
 
-# iterate through lcd function from rnoaa package using lapply
-
 lcd_data <- lapply(lcd_stat, function(x) {
   as_tibble(rbind.fill(lcd(x, year = 2005),
                        lcd(x, year = 2006),
@@ -259,12 +249,6 @@ lcd_data <- lapply(lcd_stat, function(x) {
                        lcd(x, year = 2014)))
 })
 
-# Try to iterate through m_2005
-#test <- as_tibble(m_2005[[1]])
-#for (i in m_2005) {
-#  as_tibble(i)
-#  return()
-#}
 ```
 
 ## Test 2
@@ -312,4 +296,3 @@ LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation,
 
 LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
 ```
-
