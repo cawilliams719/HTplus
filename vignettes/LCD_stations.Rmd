@@ -15,6 +15,16 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Set cache location
+- Update test works
+```{r}
+library(rnoaa)
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd("72511814751", 2005)
+```
+
+
+
 ## Download Stations
 Note that this download process is still in a testing phase. The function to iterate through downloading station data works, however data that was available several months ago is now unavailable. Therefore, I plan to create an additional code reading in csv files that are downloaded directly. I will than work on sorting and organizing this dataset for my analysis. 
 
@@ -48,12 +58,12 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
                  "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
                  "99999954782", # HERITAGE FIELD AIRPORT, PA US
-                 "99999954737", # LANCASTER AIRPORT, PA US
+                 "99999954737", # LANCASTER AIRPORT, PA US 
                  "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
                  "72510094746", # WORCESTER, MA US
                  "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
                  "99999994994", # BOSCOBEL AIRPORT, WI US
-                 "99999914702", # BEDFORD HANSCOM FIELD, MA US
+                 "99999914702", # BEDFORD HANSCOM FIELD, MA US 
                  "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
                  "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
                  "99999954778", # PENN YAN AIRPORT, NY US
@@ -89,7 +99,7 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "72225593842", # COLUMBUS METROPOLITAN AIRPORT, GA US
                  "72217003813", # MACON MIDDLE GA REGIONAL AIRPORT, GA US
                  "99999953874", # GREENWOOD CO AIRPORT, SC US
-                 "99999953838", # GAINESVILLE LEE GILMER MEMORIAL AIRPORT, GA US
+                 "99999953838", # GAINESVILLE LEE GILMER MEMORIAL AIRPORT, GA US 
                  "72320093801", # ROME R B RUSSELL AIRPORT, GA US
                  "72319093846", # ANDERSON FAA AIRPORT, SC US
                  "99999953850", # CLEMSON OCONEE CO AIRPORT, SC US
@@ -116,47 +126,58 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
 ```
 
 #### Identifying stations that are missing certain years of interest
+To Do:
+- iterate through complete stations first assign a name LCD_stations_2005_2014
+- iterate through stations based on year ranges it applies for
+  - 2005/ 2006-2014
+  - 2008/ 2005-2007 and 2009-2014
+  - 2005-2010/ 2011-2014
+- pairs of data with different station values
+- so need to iterate then bind somehow?
+- also need to change cache location data wise
+
+
 ```{r, eval = FALSE}
 # Finding which data is present/ absent in the 10 years of interest
 # This thesis is already completed. At the time of completion all data was available for all to years
 # interestingly, some data is now unavailable
 
 lcd_stat <- list("72511814751", # all 10 years
-                 "72511514711", # missing 2011-2014
+                 "72511514711", # missing 2011-2014 # try 72399014711
                  "99999964756", # all 10 years
                  "72520094823", # all 10 years
                  "72503614757", # all 10 years
                  "72510314712", # all 10 years
                  "72514014778", # all 10 years
-                 "99999954785", # missing 2006-2014
-                 "99999954793", # missing 2006-2014
+                 "99999954785", # missing 2006-2014 # try 72224754785
+                 "99999954793", # missing 2006-2014 # try 74000154793
                  "72409514792", # all 10 years
                  "72427514894", # all 10 years
                  "72513014777", # all 10 years
                  "72514014778", # all 10 years
-                 "99999954779", # missing 2006-2014?
+                 "99999954779", # missing 2006-2014 # try 72407754779
                  "72517014737", # all 10 years
-                 "99999954782", # missing 2006-2014
-                 "99999954737", # missing 2006-2014
-                 "99999954704", # missing 2006-2014
-                 "72510094746", # missing 2008
-                 "74410414763", # missing 2005
-                 "99999994994", # missing all 10 years
-                 "99999914702", # missing 2006-2014
+                 "99999954782", # missing 2006-2014 # try 72510954782
+                 "99999954737", # missing 2006-2014 # try 72511654737
+                 "99999954704", # missing 2006-2014 # try 72509854704
+                 "72510094746", # missing 2008 # try 72509594746
+                 "74410414763", # missing 2005 # try 99999914763
+                 "99999994994", # missing all 10 years # try 72643894994
+                 "99999914702", # missing 2006-2014 # try 72505914702
                  "72510704780", # all 10 years
                  "72498894704", # all 10 years
-                 "99999954778", # missing 2006-2014
-                 "99999954768", # missing 2006-2014
-                 "99999994723", # missing 2006-2014
+                 "99999954778", # missing 2006-2014 # try 72519454778
+                 "99999954768", # missing 2006-2014 # try 72507554768
+                 "99999994723", # missing 2006-2014 # try 74490494723
                  "72518014735", # all 10 years
                  "72519014771", # all 10 years
                  "72529014768", # all 10 years
-                 "72518514750", # missing 2011-2014
-                 "99999954740", # missing 2006-2014
-                 "99999954773", # missing 2006-2014
-                 "99999954772", # missing 2006-2014
+                 "72518514750", # missing 2011-2014 # try 72522014750
+                 "99999954740", # missing 2006-2014 # try 72611554740
+                 "99999954773", # missing 2006-2014 # try 72514654773
+                 "99999954772", # missing 2006-2014 # try 72618354772
                  "72537094847", # all 10 years
-                 "99999994815", # missing 2006-2014
+                 "99999994815", # missing 2006-2014 # try 72635794815
                  "72539514833", # all 10 years
                  "72539014836", # all 10 years
                  "72637014826", # all 10 years
@@ -166,25 +187,25 @@ lcd_stat <- list("72511814751", # all 10 years
                  "72645014898", # all 10 years
                  "72646314897", # all 10 years
                  "72734714841", # all 10 years
-                 "99999994893", # missing 2006-2014
-                 "99999994973", # missing 2006-2014
-                 "72221513884", # missing 2006-2014
+                 "99999994893", # missing 2006-2014 # try 72743794893
+                 "99999994973", # missing 2006-2014 # try 72650894973
+                 "72221513884", # missing 2006-2014 # try 72221513884
                  "72216693845", # all 10 years
                  "99999963829", # all 10 years
                  "99999963828", # all 10 years
                  "72216013869", # all 10 years
-                 "72316013870", # missing 2008
+                 "72316013870", # missing 2008 # try 72213513870
                  "72207003822", # all 10 years
                  "72225593842", # all 10 years
                  "72217003813", # all 10 years
-                 "99999953874", # missing 2006-2014
-                 "99999953838", # missing 2006-2014
+                 "99999953874", # missing 2006-2014 # try 72312453874
+                 "99999953838", # missing 2006-2014 # try 72218553838
                  "72320093801", # all 10 years
-                 "72319093846", # missing 2008
-                 "99999953850", # missing 2006-2014
+                 "72319093846", # missing 2008 # try 72312593846
+                 "99999953850", # missing 2006-2014 # try 72311853850
                  "72311913886", # all 10 years
                  "72312003870", # all 10 years
-                 "99999953870", # missing 2006-2014
+                 "99999953870", # missing 2006-2014 # try 72314753870
                  "72314013881") # all 10 years
 
 ```
