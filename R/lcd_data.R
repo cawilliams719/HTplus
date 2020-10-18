@@ -9,9 +9,9 @@
 #'   \code{\link[rnoaa]{lcd}} for more information on the function utilized in `lcd_data`.
 #' @examples
 
-lcd_data <- function (x, fun){
-  if (fun == "download")
-    lapply(x, function (x) {
+lcd_data <- function (x, fun) {
+  if (fun == "2005_2014") {
+    lapply(x, function (x)
       as_tibble(rbind.fill(lcd(x, year = 2005),
                            lcd(x, year = 2006),
                            lcd(x, year = 2007),
@@ -21,5 +21,49 @@ lcd_data <- function (x, fun){
                            lcd(x, year = 2011),
                            lcd(x, year = 2012),
                            lcd(x, year = 2013),
-                           lcd(x, year = 2014)))
-})}
+                           lcd(x, year = 2014))))
+  } else if (fun == "2005") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2005))))
+  } else if (fun == "2006_2014") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2006),
+                           lcd(x, year = 2007),
+                           lcd(x, year = 2008),
+                           lcd(x, year = 2009),
+                           lcd(x, year = 2010),
+                           lcd(x, year = 2011),
+                           lcd(x, year = 2012),
+                           lcd(x, year = 2013),
+                           lcd(x, year = 2014))))
+  } else if (fun == "2008") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2008))))
+  } else if (fun == "200507_200914") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2005),
+                           lcd(x, year = 2006),
+                           lcd(x, year = 2007),
+                           lcd(x, year = 2009),
+                           lcd(x, year = 2010),
+                           lcd(x, year = 2011),
+                           lcd(x, year = 2012),
+                           lcd(x, year = 2013),
+                           lcd(x, year = 2014))))
+  } else if (fun == "2005_2010") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2005),
+                           lcd(x, year = 2006),
+                           lcd(x, year = 2007),
+                           lcd(x, year = 2009),
+                           lcd(x, year = 2010))))
+  } else if (fun == "2011_2014") {
+    lapply(x, function (x)
+      as_tibble(rbind.fill(lcd(x, year = 2011),
+                           lcd(x, year = 2012),
+                           lcd(x, year = 2013),
+                           lcd(x, year = 2014))))
+  } else {
+    print("The station number or year is not valid")
+  }
+}
