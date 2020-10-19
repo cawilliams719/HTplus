@@ -24,7 +24,7 @@ lcd("72511814751", 2005)
 ```
 
 ## Download Stations
-Note that this download process is still in a testing phase. The function to iterate through downloading station data works, however a station may have a different number depending on the year. Therefore, I plan to either download these csv files into tibbles based on the number of years downloaded, or I will update my lcd_data function to be more flexibble and select the dates for each number. I will then work on sorting and organizing this dataset for my analysis. I also am considering downloading data into my previously defined clusters which includes two from the northeast, one from the northern lake states, and two from the southeast.
+Note that this download process is still in a testing phase. The function to iterate through downloading station data works, however a station may have a different number depending on the year. Therefore, I plan to either download these csv files into tibbles based on the number of years downloaded, or I will update my lcd_data function to be more flexible and select the dates for each number. I will then work on sorting and organizing this dataset for my analysis. I also am considering downloading data into my previously defined clusters which includes two from the northeast, one from the northern lake states, and two from the southeast.
 
 ### Stations (original values, some stations have multiple numbers)
 - "72511814751" - HARRISBURG CAPITAL CITY AIRPORT, PA US
@@ -33,7 +33,7 @@ Note that this download process is still in a testing phase. The function to ite
 - "72520094823" - PITTSBURGH ASOS, PA US
 - "72503614757" - POUGHKEEPSIE AIRPORT, NY US
 - "72510314712" - READING REGIONAL AIRPORT, PA US
-- "72514014778" - SELINSGROVE PENN VALLEY AIRPORT, PA US
+- "72510514770" - SELINSGROVE PENN VALLEY AIRPORT, PA US
 - "99999954785" - SOMERSET AIRPORT, NJ US
 - "99999954793" - SUSSEX AIRPORT, NJ US
 - "72409514792" - TRENTON MERCER AIRPORT, NJ US
@@ -93,96 +93,7 @@ Note that this download process is still in a testing phase. The function to ite
 - "99999953870" - GASTONIA MUNICIPAL AIRPORT, NC US
 - "72314013881" - CHARLOTTE DOUGLAS AIRPORT, NC US
 
-## Test 1
-### Test 1.a
-```{r, eval = FALSE}
-library(rnoaa)
-library(dplyr)
-library(tidyr)
-library(vctrs)
-library(plyr)
-
-# List of LCD stations and their respective station numbers (all stations)
-lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
-                 "72511514711", # MIDDLETOWN HARRISBURG INTERNATIONAL AIRPORT, PA US
-                 "99999964756", # MILLBROOK 3 W, NY US
-                 "72520094823", # PITTSBURGH ASOS, PA US
-                 "72503614757", # POUGHKEEPSIE AIRPORT, NY US
-                 "72510314712", # READING REGIONAL AIRPORT, PA US
-                 "72514014778", # SELINSGROVE PENN VALLEY AIRPORT, PA US
-                 "99999954785", # SOMERSET AIRPORT, NJ US
-                 "99999954793", # SUSSEX AIRPORT, NJ US
-                 "72409514792", # TRENTON MERCER AIRPORT, NJ US
-                 "72427514894", # WHEELING OHIO CO AIRPORT, WV US
-                 "72513014777", # WILKES BARRE SCRANTON INTERNATIONAL AIRPORT, PA US
-                 "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
-                 "99999954779", # AEROFLEX ANDOVER AIRPORT, NJ US
-                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
-                 "99999954782", # HERITAGE FIELD AIRPORT, PA US
-                 "99999954737", # LANCASTER AIRPORT, PA US 
-                 "99999954704", # NORWOOD MEMORIAL AIRPORT, MA US
-                 "72510094746", # WORCESTER, MA US
-                 "74410414763", # PITTSFIELD MUNICIPAL AIRPORT, MA US
-                 "99999994994", # BOSCOBEL AIRPORT, WI US
-                 "99999914702", # BEDFORD HANSCOM FIELD, MA US 
-                 "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
-                 "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
-                 "99999954778", # PENN YAN AIRPORT, NY US
-                 "99999954768", # NORTH ADAMS HARRIMAN AIRPORT, MA US
-                 "99999994723", # LAWRENCE MUNICIPAL AIRPORT, MA US
-                 "72518014735", # ALBANY INTERNATIONAL AIRPORT, NY US
-                 "72519014771", # SYRACUSE HANCOCK INTERNATIONAL AIRPORT, NY US
-                 "72529014768", # ROCHESTER GREATER INTERNATIONAL, NY US
-                 "72518514750", # GLENS FALLS AIRPORT, NY US
-                 "99999954740", # SPRINGFIELD HARTNESS STATE AIRPORT, VT US
-                 "99999954773", # FULTON OSWEGO CO AIRPORT, NY US
-                 "99999954772", # FRYEBURG EASTERN SLOPES REGL AIRPORT, ME US
-                 "72537094847", # DETROIT METRO AIRPORT, MI US
-                 "99999994815", # KALAMAZOO BATTLE CREEK INTERNATIONAL AIRPORT, MI US
-                 "72539514833", # JACKSON REYNOLDS FIELD, MI US
-                 "72539014836", # LANSING CAPITAL CITY AIRPORT, MI US
-                 "72637014826", # FLINT FCWOS, MI US
-                 "72641014837", # MADISON DANE CO REGIONAL AIRPORT, WI US
-                 "99999954903", # NECEDAH 5 WNW, WI US
-                 "72638094814", # HOUGHTON LAKE ROSCOMMON CO AIRPORT, MI US
-                 "72645014898", # GREEN BAY A S INTERNATIONAL AIRPORT, WI US
-                 "72646314897", # WAUSAU ASOS, WI US
-                 "72734714841", # PELLSTON REGIONAL AIRPORT, MI US
-                 "99999994893", # IRON MOUNTAIN FORD AIRPORT, MI US
-                 "99999994973", # HAYWARD MUNICIPAL AIRPORT, WI US
-                 "72221513884", # CRESTVIEW BOB SIKES AIRPORT, FL US
-                 "72216693845", # VALDOSTA REGIONAL AIRPORT, GA US
-                 "99999963829", # NEWTON 11 SW, GA US
-                 "99999963828", # NEWTON 8 W, GA US
-                 "72216013869", # ALBANY SW GEORGIA REGIONAL AIRPORT, GA US
-                 "72316013870", # ALMA BACON CO AIRPORT, GA US
-                 "72207003822", # SAVANNAH INTERNATIONAL AIRPORT, GA US
-                 "72225593842", # COLUMBUS METROPOLITAN AIRPORT, GA US
-                 "72217003813", # MACON MIDDLE GA REGIONAL AIRPORT, GA US
-                 "99999953874", # GREENWOOD CO AIRPORT, SC US
-                 "99999953838", # GAINESVILLE LEE GILMER MEMORIAL AIRPORT, GA US 
-                 "72320093801", # ROME R B RUSSELL AIRPORT, GA US
-                 "72319093846", # ANDERSON FAA AIRPORT, SC US
-                 "99999953850", # CLEMSON OCONEE CO AIRPORT, SC US
-                 "72311913886", # GREENVILLE DOWNTOWN AIRPORT, SC US
-                 "72312003870", # GRNVL SPART INTERNATIONAL AIRPORT, SC US
-                 "99999953870", # GASTONIA MUNICIPAL AIRPORT, NC US
-                 "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
-
-```
-
-#### Identifying stations that are missing certain years of interest
-To Do:
-- iterate through complete stations first assign a name LCD_stations_2005_2014
-- iterate through stations based on year ranges it applies for
-  - 2005/ 2006-2014
-  - 2008/ 2005-2007 and 2009-2014
-  - 2005-2010/ 2011-2014
-- pairs of data with different station values
-- so need to iterate then bind somehow?
-- also need to change cache location data wise
-
-
+## Data Availability
 ```{r, eval = FALSE}
 # Finding which data is present/ absent in the 10 years of interest
 # This thesis is already completed. At the time of completion all data was available for all to years
@@ -194,7 +105,7 @@ lcd_stat <- list("72511814751", # all 10 years
                  "72520094823", # all 10 years
                  "72503614757", # all 10 years
                  "72510314712", # all 10 years
-                 "72514014778", # all 10 years
+                 "72510514770", # all 10 years
                  "99999954785", # missing 2006-2014 # try 72224754785
                  "99999954793", # missing 2006-2014 # try 74000154793
                  "72409514792", # all 10 years
@@ -253,134 +164,16 @@ lcd_stat <- list("72511814751", # all 10 years
                  "72312003870", # all 10 years
                  "99999953870", # missing 2006-2014 # try 72314753870
                  "72314013881") # all 10 years
-
-
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
-lcd_2005_2010 <- list("72511514711", # missing 2011-2014 # try 72399014711
-                      "72518514750") # missing 2011-2014 # try 72522014750
-                 
-lcd_2011_2014 <- list("72399014711", # missing 2011-2014 # try 72399014711
-                      "72522014750") # missing 2011-2014 # try 72522014750
-
-lcd_2008 <- list("72509594746", # missing 2008 # try 72509594746
-                 "72213513870", # missing 2008 # try 72213513870
-                 "72312593846") # missing 2008 # try 72312593846
-                 
-lcd_200507_200914 <- list("72510094746", # missing 2008 # try 72509594746
-                          "72316013870", # missing 2008 # try 72213513870
-                          "72319093846") # missing 2008 # try 72312593846
-
-lcd_data(lcd_2005_2010, "2005_2010")
-lcd_data(lcd_2011_2014, "2011_2014")
-lcd_data(lcd_2008, "2008")
-lcd_data(lcd_200507_200914, "200507_200914")
 ```
 
-### Test 1.b
-```{r, eval = FALSE}
+## Importing Libraries
+```{r}
 library(rnoaa)
 library(dplyr)
 library(tidyr)
 library(vctrs)
 library(plyr)
-
-# List of LCD stations and their respective station numbers
-lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
-                 "99999964756", # MILLBROOK 3 W, NY US
-                 "72520094823", # PITTSBURGH ASOS, PA US
-                 "72503614757", # POUGHKEEPSIE AIRPORT, NY US
-                 "72510314712", # READING REGIONAL AIRPORT, PA US
-                 "72514014778", # SELINSGROVE PENN VALLEY AIRPORT, PA US
-                 "72409514792", # TRENTON MERCER AIRPORT, NJ US
-                 "72427514894", # WHEELING OHIO CO AIRPORT, WV US
-                 "72513014777", # WILKES BARRE SCRANTON INTERNATIONAL AIRPORT, PA US
-                 "72514014778", # WILLIAMSPORT REGIONAL AIRPORT, PA US
-                 "72517014737", # ALLENTOWN LEHIGH VALLEY INTERNATIONAL AIRPORT, PA US
-                 "72510704780", # FITCHBURG MUNICIPAL AIRPORT, MA US
-                 "72498894704", # DANSVILLE MUNICIPAL AIRPORT, NY US
-                 "72518014735", # ALBANY INTERNATIONAL AIRPORT, NY US
-                 "72519014771", # SYRACUSE HANCOCK INTERNATIONAL AIRPORT, NY US
-                 "72529014768", # ROCHESTER GREATER INTERNATIONAL, NY US
-                 "72537094847", # DETROIT METRO AIRPORT, MI US
-                 "72539514833", # JACKSON REYNOLDS FIELD, MI US
-                 "72539014836", # LANSING CAPITAL CITY AIRPORT, MI US
-                 "72637014826", # FLINT FCWOS, MI US
-                 "72641014837", # MADISON DANE CO REGIONAL AIRPORT, WI US
-                 "99999954903", # NECEDAH 5 WNW, WI US
-                 "72638094814", # HOUGHTON LAKE ROSCOMMON CO AIRPORT, MI US
-                 "72645014898", # GREEN BAY A S INTERNATIONAL AIRPORT, WI US
-                 "72646314897", # WAUSAU ASOS, WI US
-                 "72734714841", # PELLSTON REGIONAL AIRPORT, MI US
-                 "72216693845", # VALDOSTA REGIONAL AIRPORT, GA US
-                 "99999963829", # NEWTON 11 SW, GA US
-                 "99999963828", # NEWTON 8 W, GA US
-                 "72216013869", # ALBANY SW GEORGIA REGIONAL AIRPORT, GA US
-                 "72207003822", # SAVANNAH INTERNATIONAL AIRPORT, GA US
-                 "72225593842", # COLUMBUS METROPOLITAN AIRPORT, GA US
-                 "72217003813", # MACON MIDDLE GA REGIONAL AIRPORT, GA US
-                 "72320093801", # ROME R B RUSSELL AIRPORT, GA US
-                 "72311913886", # GREENVILLE DOWNTOWN AIRPORT, SC US
-                 "72312003870", # GRNVL SPART INTERNATIONAL AIRPORT, SC US
-                 "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
-
-
-```
-
-## Test 2
-```{r, eval = FALSE}
-# Here is a test example of looping through stations for all 10 years
-# The output is a list of three tibbles corresponding to each input station
-stat_name <- list("HARRISBURG_CAPITAL_CITY_AIRPORT_PA",
-                  "MILLBROOK_3_W_NY",
-                  "PITTSBURGH ASOS_PA")
-                 
-lcd_test <- list("72511814751", 
-                 "99999964756", 
-                 "72520094823")
-
-lcd_data(lcd_test, "2005_2014")
-
-
-# Testing merging station data
-lcd_stat_2005 <- list("99999954785")
-lcd_stat_2006_2014 <- list("72224754785")
-
-lcd_data_2005 <- lapply(lcd_stat_2005, function(x) {
-  as_tibble(rbind.fill(lcd(x, year = 2005)))
-})
-
-lcd_data_2006_2014 <- lapply(lcd_stat_2006_2014, function(x) {
-  as_tibble(rbind.fill(lcd(x, year = 2006),
-                       lcd(x, year = 2007),
-                       lcd(x, year = 2008),
-                       lcd(x, year = 2009),
-                       lcd(x, year = 2010),
-                       lcd(x, year = 2011),
-                       lcd(x, year = 2012),
-                       lcd(x, year = 2013),
-                       lcd(x, year = 2014)))
-})
-#combine afterword
-# perhaps make into a missing values function
-
-test <- rbind.fill(lcd_data_2005, lcd_data_2006_2014)
-# Considering using paste0 to name each tibble somehow
-t <- m_test[[1]]
-paste0("LCD_", stat_name[[1]], "_2005_2014")
-
-# Trying different methods of sorting data
-# To DO: try using pivot_wider to split date into year and month
-# then calculate the mean ofjuly over the 10 years per station
-# output to a single tibble file
-
-LCD_new <- as_tibble(m_test[[1]]) 
-LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature)
-
-LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(desc(date))
-
-LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0)
-
-LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
+library(HTplus)
 ```
 
 ## Clusters
@@ -393,7 +186,7 @@ NE1_2005_2014 <- list("72517014737", # all 10 years
                       "72520094823", # all 10 years
                       "72503614757", # all 10 years
                       "72510314712", # all 10 years
-                      "72514014778", # all 10 years
+                      "72510514770", # all 10 years
                       "72409514792", # all 10 years
                       "72427514894", # all 10 years
                       "72513014777", # all 10 years
@@ -405,17 +198,38 @@ NE2_2005_2014 <- list("72510704780", # all 10 years
                       "72519014771", # all 10 years
                       "72529014768") # all 10 years
                       
-NLS_2005_2014 <- list()
-SE1_2005_2014 <- list()
-SE2_2005_2014 <- list()
+NLS_2005_2014 <- list("72537094847", # all 10 years
+                      "72539514833", # all 10 years
+                      "72539014836", # all 10 years
+                      "72637014826", # all 10 years
+                      "72641014837", # all 10 years
+                      "99999954903", # all 10 years
+                      "72638094814", # all 10 years
+                      "72645014898", # all 10 years
+                      "72646314897", # all 10 years
+                      "72734714841") # all 10 years
+                      
+
+SE1_2005_2014 <- list("72216693845", # all 10 years
+                      "99999963829", # all 10 years
+                      "99999963828", # all 10 years
+                      "72216013869", # all 10 years
+                      "72207003822", # all 10 years
+                      "72225593842", # all 10 years
+                      "72217003813") # all 10 years
+                 
+SE2_2005_2014 <- list("72320093801", # all 10 years
+                      "72311913886", # all 10 years
+                      "72312003870", # all 10 years
+                      "72314013881") # all 10 years
 
 # Downloading stations by cluster for 2005 to 2014
 lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 NE1_2005_2014_data <- lcd_data(NE1_2005_2014, "2005_2014")
 NE2_2005_2014_data <- lcd_data(NE2_2005_2014, "2005_2014")
-lcd_data(NLS_2005_2014, "2005_2014")
-lcd_data(SE1_2005_2014, "2005_2014")
-lcd_data(SE2_2005_2014, "2005_2014")
+NLS_2005_2014_data <- lcd_data(NLS_2005_2014, "2005_2014")
+SE1_2005_2014_data <- lcd_data(SE1_2005_2014, "2005_2014")
+SE2_2005_2014_data <- lcd_data(SE2_2005_2014, "2005_2014")
 ```
 
 ### 2005
@@ -437,16 +251,25 @@ NE2_2005 <- list("99999954704", # missing 2006-2014 # try 72509854704
                  "99999954773", # missing 2006-2014 # try 72514654773
                  "99999954772") # missing 2006-2014 # try 72618354772
                       
-NLS_2005 <- list()
-SE1_2005 <- list()
-SE2_2005 <- list()
+NLS_2005 <- list("99999994815", # missing 2006-2014 # try 72635794815
+                 "99999994893", # missing 2006-2014 # try 72743794893
+                 "99999994994", # missing all 10 years # try 72643894994
+                 "99999994973") # missing 2006-2014 # try 72650894973
+
+SE1_2005 <- list("72221513884") # missing 2006-2014 # try 72221513884
+
+SE2_2005 <- list("99999953874", # missing 2006-2014 # try 72312453874
+                "99999953838", # missing 2006-2014 # try 72218553838
+                "99999953850", # missing 2006-2014 # try 72311853850
+                "99999953870") # missing 2006-2014 # try 72314753870
 
 # Downloading stations by cluster for 2005
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 NE1_2005_2014_data <- lcd_data(NE1_2005, "2005")
 NE2_2005_data <- lcd_data(NE2_2005, "2005")
-lcd_data(NLS_2005, "2005")
-lcd_data(SE1_2005, "2005")
-lcd_data(SE2_2005, "2005")
+NLS_2005_data <- lcd_data(NLS_2005, "2005")
+SE1_2005_data <- lcd_data(SE1_2005, "2005")
+SE2_2005_data <- lcd_data(SE2_2005, "2005")
 ```
 
 ### 2006 to 2014
@@ -469,16 +292,25 @@ NE2_2006_2014 <- list("72509854704", # missing 2006-2014 # try 72509854704
                       "72618354772") # missing 2006-2014 # try 72618354772
                       
 
-NLS_2006_2014 <- list()
-SE1_2006_2014 <- list()
-SE2_2006_2014 <- list()
+NLS_2006_2014 <- list("72635794815", # missing 2006-2014 # try 72635794815
+                      "72743794893", # missing 2006-2014 # try 72743794893
+                      "72643894994", # missing all 10 years # try 72643894994
+                      "72650894973") # missing 2006-2014 # try 72650894973
+
+SE1_2006_2014 <- list("72221513884") # missing 2006-2014 # try 72221513884
+
+SE2_2006_2014 <- list("72312453874", # missing 2006-2014 # try 72312453874
+                      "72218553838", # missing 2006-2014 # try 72218553838
+                      "72311853850", # missing 2006-2014 # try 72311853850
+                      "72314753870") # missing 2006-2014 # try 72314753870
 
 # Downloading stations by cluster for 2006 to 2014
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 NE1_2006_2014_data <- lcd_data(NE1_2006_2014, "2006_2014")
 NE2_2006_2014_data <- lcd_data(NE2_2006_2014, "2006_2014")
-lcd_data(NLS_2006_2014, "2006_2014")
-lcd_data(SE1_2006_2014, "2006_2014")
-lcd_data(SE2_2006_2014, "2006_2014")
+NLS_2006_2014_data <- lcd_data(NLS_2006_2014, "2006_2014")
+SE1_2006_2014_data <- lcd_data(SE1_2006_2014, "2006_2014")
+SE2_2006_2014_data <- lcd_data(SE2_2006_2014, "2006_2014")
 ```
 
 ### 2008
@@ -486,16 +318,15 @@ lcd_data(SE2_2006_2014, "2006_2014")
 # Creating lists by cluster for the year 2008
 NE2_2008 <- list("72509594746") # missing 2008 # try 72509594746
 
-NLS_2008 <- list()
-SE1_2008 <- list()
-SE2_2008 <- list()
+SE1_2008 <- list("72213513870") # missing 2008 # try 72213513870
+                 
+SE2_2008 <- list("72312593846") # missing 2008 # try 72312593846
 
 # Downloading stations by cluster for 2008
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 NE2_2008_data <- lcd_data(NE2_2008, "2008")
-lcd_data(NE2_2008, "2008")
-lcd_data(NLS_2008, "2008")
-lcd_data(SE1_2008, "2008")
-lcd_data(SE2_2008, "2008")
+SE1_2008_data <- lcd_data(SE1_2008, "2008")
+SE2_2008_data <- lcd_data(SE2_2008, "2008")
 ```
 
 ### 2005 to 2007 and 2009 to 2014
@@ -503,16 +334,16 @@ lcd_data(SE2_2008, "2008")
 # Creating lists by cluster for the years 2005 to 2007 and 2009 to 2014
 NE2_200507_200914 <- list("72510094746") # missing 2008 # try 72509594746
                       
-NLS_200507_200914 <- list()
-SE1_200507_200914 <- list()
-SE2_200507_200914 <- list()
+
+SE1_200507_200914 <- list("72316013870") # missing 2008 # try 72213513870
+
+SE2_200507_200914 <- list("72319093846") # missing 2008 # try 72312593846
 
 # Downloading stations by cluster for 2005 to 2014
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 NE2_200507_200914_data <- lcd_data(NE2_200507_200914, "200507_200914")
-lcd_data(NE2_200507_200914, "200507_200914")
-lcd_data(NLS_200507_200914, "200507_200914")
-lcd_data(SE1_200507_200914, "200507_200914")
-lcd_data(SE2_200507_200914, "200507_200914")
+SE1_200507_200914_data <- lcd_data(SE1_200507_200914, "200507_200914")
+SE2_200507_200914_data <- lcd_data(SE2_200507_200914, "200507_200914")
 ```
 
 ### 2005 to 2010
@@ -522,16 +353,11 @@ NE1_2005_2010 <- list("72511514711") # missing 2011-2014 # try 72399014711
 
 NE2_2005_2010 <- list("72518514750") # missing 2011-2014 # try 72522014750
 
-NLS_2005_2010 <- list()
-SE1_2005_2010 <- list()
-SE2_2005_2010 <- list()
 
 # Downloading stations by cluster for 2005 to 2014
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+NE1_2005_2010_data <- lcd_data(NE1_2005_2010, "2005_2010")
 NE2_2005_2010_data <- lcd_data(NE2_2005_2010, "2005_2010")
-lcd_data(NE2_2005_2010, "2005_2010")
-lcd_data(NLS_2005_2010, "2005_2010")
-lcd_data(SE1_2005_2010, "2005_2010")
-lcd_data(SE2_2005_2010, "2005_2010")
 ```
 
 ### 2011 to 2014
@@ -541,16 +367,10 @@ NE1_2011_2014 <- list("72399014711") # missing 2011-2014 # try 72399014711
 
 NE2_2011_2014 <- list("72522014750") # missing 2011-2014 # try 72522014750
 
-NLS_2011_2014 <- list()
-SE1_2011_2014 <- list()
-SE2_2011_2014 <- list()
-
 # Downloading stations by cluster for 2005 to 2014
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+NE1_2011_2014_data <- lcd_data(NE1_2011_2014, "2011_2014")
 NE2_2011_2014_data <- lcd_data(NE2_2011_2014, "2011_2014")
-lcd_data(NE2_2011_2014, "2011_2014")
-lcd_data(NLS_2011_2014, "2011_2014")
-lcd_data(SE1_2011_2014, "2011_2014")
-lcd_data(SE2_2011_2014, "2011_2014")
 ```
 
 ## Merging Data
@@ -558,8 +378,9 @@ lcd_data(SE2_2011_2014, "2011_2014")
 # NE1
 NE1_merge1 <- mapply(rbind,NE1_2005_data, NE1_2006_2014_data, SIMPLIFY=FALSE)
 NE1_merge2 <- mapply(rbind,NE1_2005_2010_data, NE1_2011_2014_data, SIMPLIFY=FALSE)
+NE1_merge3 <- mapply(rbind,NE1_2005_2010_data, NE1_2011_2014_data, SIMPLIFY=FALSE)
 
-NE1 <- c(NE1_merge1, NE1_merge2, NE1_2005_2014_data)
+NE1 <- c(NE1_merge1, NE1_merge2, NE1_merge3, NE1_2005_2014_data)
 
 # NE2
 NE2_merge1 <- mapply(rbind,NE2_2005_data, NE2_2006_2014_data, SIMPLIFY=FALSE)
@@ -567,5 +388,41 @@ NE2_merge2 <- mapply(rbind,NE2_2008_data, NE2_200507_200914_data, SIMPLIFY=FALSE
 NE2_merge3 <- mapply(rbind,NE2_2005_2010_data, NE2_2011_2014_data, SIMPLIFY=FALSE)
 
 NE2 <- c(NE2_merge1, NE2_merge2, NE2_merge3, NE2_2005_2014_data)
+
+# NLS
+NLS_merge1 <- mapply(rbind,NLS_2005_data, NLS_2006_2014_data, SIMPLIFY=FALSE)
+NLS_merge2 <- mapply(rbind,NLS_2005_2010_data, NLS_2011_2014_data, SIMPLIFY=FALSE)
+
+NLS <- c(NLS_merge1, NLS_merge2, NLS_2005_2014_data)
+
+# SE1
+SE1_merge1 <- mapply(rbind,SE1_2005_data, SE1_2006_2014_data, SIMPLIFY=FALSE)
+SE1_merge2 <- mapply(rbind,SE1_2008_data, SE1_200507_200914_data, SIMPLIFY=FALSE)
+
+SE1 <- c(SE1_merge1, SE1_merge2, SE1_2005_2014_data)
+
+# SE2
+SE2_merge1 <- mapply(rbind, SE2_2005_data, SE2_2006_2014_data, SIMPLIFY=FALSE)
+SE2_merge2 <- mapply(rbind,SE2_2008_data, SE2_200507_200914_data, SIMPLIFY=FALSE)
+
+SE2 <- c(SE2_merge1, SE2_merge2, SE2_2005_2014_data)
 ```
 
+## Tidying/ Sorting through data
+
+## Test 2
+```{r, eval = FALSE}
+# Trying different methods of sorting data
+# To DO: try using pivot_wider to split date into year and month
+# then calculate the mean ofjuly over the 10 years per station
+# output to a single tibble file
+
+LCD_new <- as_tibble(m_test[[1]]) 
+LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature)
+
+LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(desc(date))
+
+LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0)
+
+LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
+```
