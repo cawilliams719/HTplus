@@ -1,8 +1,8 @@
-#' A Data Download Function
+#' A Data Download Function for NOAA's LCD Stations
 #' @description This function downloads meteorological station data from NOAA's Local Climatological Data (LCD). Additionally this function utilizes the `lcd` function from the `rnoaa` package. The purpose of this function is to create a tibble of station data over a 10 year period.
-#' @param fun The function parameter must equal "download." If else, the function will not run. This parameter indicates that you wish to download data.
+#' @param fun The function parameter must equal one of the following: "2005_2014", "2005", "2006_2014", "2008", "200507_200914", "2005_2010", and "2011_2014". These options determine the years of station data to be downloaded. If else, the function will not run. These parameters indicates that you wish to download LCD data for the specified years.
 #' @param x x must equal a vector of LCD stations.
-#' @details The function is designed to download data for the years 2005 to 2014, however the code can be adapted to the user's data needs. The code iterates through a list of LCD stations to create a list of tibbles for each station for the 10 year period. For more information on the `lcd` function, please refer to the `rnoaa` package.
+#' @details The function is designed to download data for the years 2005 to 2014 and years in between. Some LCD stations will have multiple numbers for a station depending on a year, thus this function is designed to be able to donwload data for a station in different chunks. Additionally, this code can be adapted to the user's data needs. The code iterates through a list of LCD stations to create a list of tibbles for each station for the 10 year period. For more information on the `lcd` function, please refer to the `rnoaa` package.
 #'
 #' @export
 #' @seealso

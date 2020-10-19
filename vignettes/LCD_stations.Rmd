@@ -169,21 +169,6 @@ lcd_stat <- list("72511814751", # HARRISBURG CAPITAL CITY AIRPORT, PA US
                  "99999953870", # GASTONIA MUNICIPAL AIRPORT, NC US
                  "72314013881") # CHARLOTTE DOUGLAS AIRPORT, NC US
 
-# iterate through lcd function from rnoaa package using lapply
-# this code chunk has been converted into a function
-# please see lcd_data in HTplus package for documentation
-# lcd_data <- lapply(lcd_stat, function(x) {
-  # as_tibble(rbind.fill(lcd(x, year = 2005),
-                       # lcd(x, year = 2006),
-                       # lcd(x, year = 2007),
-                       # lcd(x, year = 2008),
-                       # lcd(x, year = 2009),
-                       # lcd(x, year = 2010),
-                       # lcd(x, year = 2011),
-                       # lcd(x, year = 2012),
-                       # lcd(x, year = 2013),
-                       # lcd(x, year = 2014)))
-# })
 ```
 
 #### Identifying stations that are missing certain years of interest
@@ -274,19 +259,21 @@ lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
 lcd_2005_2010 <- list("72511514711", # missing 2011-2014 # try 72399014711
                       "72518514750") # missing 2011-2014 # try 72522014750
                  
-lcd_2011_2014 <- list("72511514711", # missing 2011-2014 # try 72399014711
-                      "72518514750") # missing 2011-2014 # try 72522014750
+lcd_2011_2014 <- list("72399014711", # missing 2011-2014 # try 72399014711
+                      "72522014750") # missing 2011-2014 # try 72522014750
 
-lcd_2008 <- list("72510094746", # missing 2008 # try 72509594746
-                 "72316013870", # missing 2008 # try 72213513870
-                 "72319093846") # missing 2008 # try 72312593846
+lcd_2008 <- list("72509594746", # missing 2008 # try 72509594746
+                 "72213513870", # missing 2008 # try 72213513870
+                 "72312593846") # missing 2008 # try 72312593846
                  
 lcd_200507_200914 <- list("72510094746", # missing 2008 # try 72509594746
                           "72316013870", # missing 2008 # try 72213513870
                           "72319093846") # missing 2008 # try 72312593846
 
-lcd_data(lcd_2006_2014, "2006_2014")
-
+lcd_data(lcd_2005_2010, "2005_2010")
+lcd_data(lcd_2011_2014, "2011_2014")
+lcd_data(lcd_2008, "2008")
+lcd_data(lcd_200507_200914, "200507_200914")
 ```
 
 ### Test 1.b
@@ -394,5 +381,161 @@ LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlym
 LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0)
 
 LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
+```
+
+## Clusters
+### 2005 to 2014
+```{r}
+# Creating lists by cluster for the years 2005 to 2014
+NE1_2005_2014 <- list("72510704780", # all 10 years
+                      "72498894704", # all 10 years
+                      "72518014735", # all 10 years
+                      "72519014771", # all 10 years
+                      "72529014768") # all 10 years
+                      
+NE2_2005_2014 <- list()
+NLS_2005_2014 <- list()
+SE1_2005_2014 <- list()
+SE2_2005_2014 <- list()
+
+# Downloading stations by cluster for 2005 to 2014
+NE1_2005_2014_data <- lcd_data(NE1_2005_2014, "2005_2014")
+lcd_data(NE2_2005_2014, "2005_2014")
+lcd_data(NLS_2005_2014, "2005_2014")
+lcd_data(SE1_2005_2014, "2005_2014")
+lcd_data(SE2_2005_2014, "2005_2014")
+```
+
+### 2005
+```{r}
+# Creating lists by cluster for the year 2005
+NE1_2005 <- list("99999954704", # missing 2006-2014 # try 72509854704 
+                 "99999914763", # missing 2005 # try 99999914763
+                 "99999914702", # missing 2006-2014 # try 72505914702
+                 "99999954778", # missing 2006-2014 # try 72519454778
+                 "99999954768", # missing 2006-2014 # try 72507554768
+                 "99999994723", # missing 2006-2014 # try 74490494723
+                 "99999954740", # missing 2006-2014 # try 72611554740
+                 "99999954773", # missing 2006-2014 # try 72514654773
+                 "99999954772") # missing 2006-2014 # try 72618354772
+                      
+NE2_2005 <- list()
+NLS_2005 <- list()
+SE1_2005 <- list()
+SE2_2005 <- list()
+
+# Downloading stations by cluster for 2005
+NE1_2005_data <- lcd_data(NE1_2005, "2005")
+lcd_data(NE2_2005, "2005")
+lcd_data(NLS_2005, "2005")
+lcd_data(SE1_2005, "2005")
+lcd_data(SE2_2005, "2005")
+```
+
+### 2006 to 2014
+```{r}
+# Creating lists by cluster for the years 2006 to 2014
+NE1_2006_2014 <- list("72509854704", # missing 2006-2014 # try 72509854704 
+                      "72509854704", # missing 2005 # try 99999914763
+                      "72505914702", # missing 2006-2014 # try 72505914702
+                      "72519454778", # missing 2006-2014 # try 72519454778
+                      "72507554768", # missing 2006-2014 # try 72507554768
+                      "74490494723", # missing 2006-2014 # try 74490494723
+                      "72611554740", # missing 2006-2014 # try 72611554740
+                      "72514654773", # missing 2006-2014 # try 72514654773
+                      "72618354772") # missing 2006-2014 # try 72618354772
+                      
+NE2_2006_2014 <- list()
+NLS_2006_2014 <- list()
+SE1_2006_2014 <- list()
+SE2_2006_2014 <- list()
+
+# Downloading stations by cluster for 2006 to 2014
+NE1_2006_2014_data <- lcd_data(NE1_2006_2014, "2006_2014")
+lcd_data(NE2_2006_2014, "2006_2014")
+lcd_data(NLS_2006_2014, "2006_2014")
+lcd_data(SE1_2006_2014, "2006_2014")
+lcd_data(SE2_2006_2014, "2006_2014")
+```
+
+### 2008
+```{r}
+# Creating lists by cluster for the year 2008
+NE1_2008 <- list("72509594746") # missing 2008 # try 72509594746
+                      
+NE2_2008 <- list()
+NLS_2008 <- list()
+SE1_2008 <- list()
+SE2_2008 <- list()
+
+# Downloading stations by cluster for 2008
+NE1_2008_data <- lcd_data(NE1_2008, "2008")
+lcd_data(NE2_2008, "2008")
+lcd_data(NLS_2008, "2008")
+lcd_data(SE1_2008, "2008")
+lcd_data(SE2_2008, "2008")
+```
+
+### 2005 to 2007 and 2009 to 2014
+```{r}
+# Creating lists by cluster for the years 2005 to 2007 and 2009 to 2014
+NE1_200507_200914 <- list("72510094746") # missing 2008 # try 72509594746
+                      
+NE2_200507_200914 <- list()
+NLS_200507_200914 <- list()
+SE1_200507_200914 <- list()
+SE2_200507_200914 <- list()
+
+# Downloading stations by cluster for 2005 to 2014
+NE1_200507_200914_data <- lcd_data(NE1_200507_200914, "200507_200914")
+lcd_data(NE2_200507_200914, "200507_200914")
+lcd_data(NLS_200507_200914, "200507_200914")
+lcd_data(SE1_200507_200914, "200507_200914")
+lcd_data(SE2_200507_200914, "200507_200914")
+```
+
+### 2005 to 2010
+```{r}
+# Creating lists by cluster for the years 2005 to 2010
+NE1_2005_2010 <- list("72518514750") # missing 2011-2014 # try 72522014750
+                    
+                      
+NE2_2005_2010 <- list()
+NLS_2005_2010 <- list()
+SE1_2005_2010 <- list()
+SE2_2005_2010 <- list()
+
+# Downloading stations by cluster for 2005 to 2014
+NE1_2005_2010_data <- lcd_data(NE1_2005_2010, "2005_2010")
+lcd_data(NE2_2005_2010, "2005_2010")
+lcd_data(NLS_2005_2010, "2005_2010")
+lcd_data(SE1_2005_2010, "2005_2010")
+lcd_data(SE2_2005_2010, "2005_2010")
+```
+
+### 2011 to 2014
+```{r}
+# Creating lists by cluster for the years 2011 to 2014
+NE1_2011_2014 <- list("72522014750") # missing 2011-2014 # try 72522014750
+                      
+NE2_2011_2014 <- list()
+NLS_2011_2014 <- list()
+SE1_2011_2014 <- list()
+SE2_2011_2014 <- list()
+
+# Downloading stations by cluster for 2005 to 2014
+NE1_2011_2014_data <- lcd_data(NE1_2011_2014, "2011_2014")
+lcd_data(NE2_2011_2014, "2011_2014")
+lcd_data(NLS_2011_2014, "2011_2014")
+lcd_data(SE1_2011_2014, "2011_2014")
+lcd_data(SE2_2011_2014, "2011_2014")
+```
+
+## Merging Data
+```{r}
+# NE1
+NE1_merge1 <- mapply(rbind,NE1_2005_data,NE1_2006_2014_data,SIMPLIFY=FALSE)
+NE1_merge2 <- mapply(rbind,NE1_2008_data,NE1_200507_200914_data,SIMPLIFY=FALSE)
+NE1_merge3 <- mapply(rbind,NE1_2005_2010_data,NE1_2011_2014_data,SIMPLIFY=FALSE)
 ```
 
