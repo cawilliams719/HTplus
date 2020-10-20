@@ -224,11 +224,15 @@ SE2_2005_2014 <- list("72320093801", # all 10 years
                       "72314013881") # all 10 years
 
 # Downloading stations by cluster for 2005 to 2014
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE1_2005_2014_data <- lcd_data(NE1_2005_2014, "2005_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2005_2014_data <- lcd_data(NE2_2005_2014, "2005_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NLS_2005_2014_data <- lcd_data(NLS_2005_2014, "2005_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE1_2005_2014_data <- lcd_data(SE1_2005_2014, "2005_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE2_2005_2014_data <- lcd_data(SE2_2005_2014, "2005_2014")
 ```
 
@@ -259,16 +263,20 @@ NLS_2005 <- list("99999994815", # missing 2006-2014 # try 72635794815
 SE1_2005 <- list("72221513884") # missing 2006-2014 # try 72221513884
 
 SE2_2005 <- list("99999953874", # missing 2006-2014 # try 72312453874
-                "99999953838", # missing 2006-2014 # try 72218553838
-                "99999953850", # missing 2006-2014 # try 72311853850
-                "99999953870") # missing 2006-2014 # try 72314753870
+                 "99999953838", # missing 2006-2014 # try 72218553838
+                 "99999953850", # missing 2006-2014 # try 72311853850
+                 "99999953870") # missing 2006-2014 # try 72314753870
 
 # Downloading stations by cluster for 2005
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
-NE1_2005_2014_data <- lcd_data(NE1_2005, "2005")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
+NE1_2005_data <- lcd_data(NE1_2005, "2005")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2005_data <- lcd_data(NE2_2005, "2005")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NLS_2005_data <- lcd_data(NLS_2005, "2005")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE1_2005_data <- lcd_data(SE1_2005, "2005")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE2_2005_data <- lcd_data(SE2_2005, "2005")
 ```
 
@@ -305,11 +313,15 @@ SE2_2006_2014 <- list("72312453874", # missing 2006-2014 # try 72312453874
                       "72314753870") # missing 2006-2014 # try 72314753870
 
 # Downloading stations by cluster for 2006 to 2014
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE1_2006_2014_data <- lcd_data(NE1_2006_2014, "2006_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2006_2014_data <- lcd_data(NE2_2006_2014, "2006_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NLS_2006_2014_data <- lcd_data(NLS_2006_2014, "2006_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE1_2006_2014_data <- lcd_data(SE1_2006_2014, "2006_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE2_2006_2014_data <- lcd_data(SE2_2006_2014, "2006_2014")
 ```
 
@@ -323,9 +335,11 @@ SE1_2008 <- list("72213513870") # missing 2008 # try 72213513870
 SE2_2008 <- list("72312593846") # missing 2008 # try 72312593846
 
 # Downloading stations by cluster for 2008
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2008_data <- lcd_data(NE2_2008, "2008")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE1_2008_data <- lcd_data(SE1_2008, "2008")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE2_2008_data <- lcd_data(SE2_2008, "2008")
 ```
 
@@ -340,9 +354,11 @@ SE1_200507_200914 <- list("72316013870") # missing 2008 # try 72213513870
 SE2_200507_200914 <- list("72319093846") # missing 2008 # try 72312593846
 
 # Downloading stations by cluster for 2005 to 2014
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_200507_200914_data <- lcd_data(NE2_200507_200914, "200507_200914")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE1_200507_200914_data <- lcd_data(SE1_200507_200914, "200507_200914")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 SE2_200507_200914_data <- lcd_data(SE2_200507_200914, "200507_200914")
 ```
 
@@ -355,8 +371,9 @@ NE2_2005_2010 <- list("72518514750") # missing 2011-2014 # try 72522014750
 
 
 # Downloading stations by cluster for 2005 to 2014
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE1_2005_2010_data <- lcd_data(NE1_2005_2010, "2005_2010")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2005_2010_data <- lcd_data(NE2_2005_2010, "2005_2010")
 ```
 
@@ -368,8 +385,9 @@ NE1_2011_2014 <- list("72399014711") # missing 2011-2014 # try 72399014711
 NE2_2011_2014 <- list("72522014750") # missing 2011-2014 # try 72522014750
 
 # Downloading stations by cluster for 2005 to 2014
-lcd_cache$cache_path_set(full_path = "D:/noaa_lcd")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE1_2011_2014_data <- lcd_data(NE1_2011_2014, "2011_2014")
+lcd_cache$cache_path_set(full_path = "D:/noaa_lcd_cache")
 NE2_2011_2014_data <- lcd_data(NE2_2011_2014, "2011_2014")
 ```
 
@@ -410,11 +428,20 @@ SE2 <- c(SE2_merge1, SE2_merge2, SE2_2005_2014_data)
 
 ## Tidying/ Sorting through data
 
+```{r}
+#NE 1
+NE1_select <- NE1[[1]] %>% 
+  select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% 
+  arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0) %>% 
+  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature)
+```
+
+
 ## Test 2
 ```{r, eval = FALSE}
 # Trying different methods of sorting data
 # To DO: try using pivot_wider to split date into year and month
-# then calculate the mean ofjuly over the 10 years per station
+# then calculate the mean of july over the 10 years per station
 # output to a single tibble file
 
 LCD_new <- as_tibble(m_test[[1]]) 
