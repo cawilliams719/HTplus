@@ -427,32 +427,39 @@ SE2 <- c(SE2_merge1, SE2_merge2, SE2_2005_2014_data)
 ```
 
 ## Tidying/ Sorting through data
+- station 1 in NE1 object is first organized into a more manageable table
+- then the station is filtered by the month of July
+- Minimum, mean, and maximum temperatures are then averaged over the 10 years
 
+To DO:
+- I either need to iterate this process by cluster, or work through each station separately copying the code 65 times
+- after working through all the stations I need to create one table with the merged data
+- Once I finish the sorting process and averaging, I can then work with the raster data
+
+Looking Ahead:
+- the next step would be the "window" processing:
+  - make the summarized csv sheet an sf object
+  - buffer around each station by 495 m
+  - convert this buffer into a polygon
+  - clip the raster data for the 10 years by station polygon
+  - calculate the area of each land cover type by total area for each station area
+    - forest
+    - urban
+    - agriculture
+    - wetland
+    
 ```{r}
 #NE 1
 # clean up data a bit
 NE1_select <- NE1[[1]] %>% 
   select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% 
   arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0) %>% 
-  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% separate(., "date", c("year", "month"), sep = "-") %>% 
+  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% separate(., "date", c("year", "month"), sep = "-") 
+
+# July Temperatures Averages over 10 year period
+NE1_select2 <- NE1_select %>% filter(month == "07") 
+NE1_select3 <- NE1_select2 %>% summarise(
+  Tmin = mean(Tmin), Tmeann = mean(Tmean), Tmax = mean(Tmax))
   
-# after maybe write objects out as csvs?
-```
-
-
-## Test 2
-```{r, eval = FALSE}
-# Trying different methods of sorting data
-# To DO: try using pivot_wider to split date into year and month
-# then calculate the mean of july over the 10 years per station
-# output to a single tibble file
-
-LCD_new <- as_tibble(m_test[[1]]) 
-LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature)
-
-LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% arrange(desc(date))
-
-LCD_degrees <- LCD_new %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0)
-
-LCD_degrees %>% summarize_all(mean(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature))
+# after maybe write objects out as csv files?
 ```
