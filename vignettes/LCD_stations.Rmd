@@ -430,10 +430,13 @@ SE2 <- c(SE2_merge1, SE2_merge2, SE2_2005_2014_data)
 
 ```{r}
 #NE 1
+# clean up data a bit
 NE1_select <- NE1[[1]] %>% 
   select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% 
   arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0) %>% 
-  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature)
+  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% separate(., "date", c("year", "month"), sep = "-") %>% 
+  
+# after maybe write objects out as csvs?
 ```
 
 
