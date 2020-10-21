@@ -174,11 +174,14 @@ library(tidyr)
 library(vctrs)
 library(plyr)
 library(HTplus)
+library(sf)
+library(ggplot2)
+library(maptools)
 ```
 
 ## Clusters
 ### 2005 to 2014
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the years 2005 to 2014
 NE1_2005_2014 <- list("72517014737", # all 10 years
                       "72511814751", # all 10 years
@@ -237,7 +240,7 @@ SE2_2005_2014_data <- lcd_data(SE2_2005_2014, "2005_2014")
 ```
 
 ### 2005
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the year 2005
 NE1_2005 <- list("99999954779", # missing 2006-2014 # try 72407754779
                  "99999954782", # missing 2006-2014 # try 72510954782
@@ -281,7 +284,7 @@ SE2_2005_data <- lcd_data(SE2_2005, "2005")
 ```
 
 ### 2006 to 2014
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the years 2006 to 2014
 NE1_2006_2014 <- list("72407754779", # missing 2006-2014 # try 72407754779
                       "72510954782", # missing 2006-2014 # try 72510954782
@@ -326,7 +329,7 @@ SE2_2006_2014_data <- lcd_data(SE2_2006_2014, "2006_2014")
 ```
 
 ### 2008
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the year 2008
 NE2_2008 <- list("72509594746") # missing 2008 # try 72509594746
 
@@ -344,7 +347,7 @@ SE2_2008_data <- lcd_data(SE2_2008, "2008")
 ```
 
 ### 2005 to 2007 and 2009 to 2014
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the years 2005 to 2007 and 2009 to 2014
 NE2_200507_200914 <- list("72510094746") # missing 2008 # try 72509594746
                       
@@ -363,7 +366,7 @@ SE2_200507_200914_data <- lcd_data(SE2_200507_200914, "200507_200914")
 ```
 
 ### 2005 to 2010
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the years 2005 to 2010
 NE1_2005_2010 <- list("72511514711") # missing 2011-2014 # try 72399014711
 
@@ -378,7 +381,7 @@ NE2_2005_2010_data <- lcd_data(NE2_2005_2010, "2005_2010")
 ```
 
 ### 2011 to 2014
-```{r}
+```{r, eval = FALSE}
 # Creating lists by cluster for the years 2011 to 2014
 NE1_2011_2014 <- list("72399014711") # missing 2011-2014 # try 72399014711
 
@@ -392,11 +395,10 @@ NE2_2011_2014_data <- lcd_data(NE2_2011_2014, "2011_2014")
 ```
 
 ## Merging Data
-```{r}
+```{r, eval = FALSE}
 # NE1
 NE1_merge1 <- mapply(rbind,NE1_2005_data, NE1_2006_2014_data, SIMPLIFY=FALSE)
 NE1_merge2 <- mapply(rbind,NE1_2005_2010_data, NE1_2011_2014_data, SIMPLIFY=FALSE)
-NE1_merge3 <- mapply(rbind,NE1_2005_2010_data, NE1_2011_2014_data, SIMPLIFY=FALSE)
 
 NE1 <- c(NE1_merge1, NE1_merge2, NE1_merge3, NE1_2005_2014_data)
 
@@ -447,19 +449,111 @@ Looking Ahead:
     - urban
     - agriculture
     - wetland
-    
-```{r}
+
+### NE1   
+```{r, eval = FALSE}
 #NE 1
 # clean up data a bit
-NE1_select <- NE1[[1]] %>% 
-  select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% 
-  arrange(monthlymaximumtemperature, monthlymeantemperature,monthlyminimumtemperature) %>% filter(monthlymeantemperature > 0) %>% 
-  dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% separate(., "date", c("year", "month"), sep = "-") 
+# select columns
+# calculate mean July Temperatures
 
-# July Temperatures Averages over 10 year period
-NE1_select2 <- NE1_select %>% filter(month == "07") 
-NE1_select3 <- NE1_select2 %>% summarise(
-  Tmin = mean(Tmin), Tmeann = mean(Tmean), Tmax = mean(Tmax))
-  
-# after maybe write objects out as csv files?
+# NE1: Station1
+NE1_select_1 <- NE1[[1]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station2
+NE1_select_2 <- NE1[[2]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station3
+NE1_select_3 <- NE1[[3]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station4
+NE1_select_4 <- NE1[[4]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station5
+NE1_select_5 <- NE1[[5]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station6
+NE1_select_6 <- NE1[[6]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# DUPLICATE STATION
+# NE1: Station7
+#NE1_select_7 <- NE1[[7]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+ # arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  #TmaxAvg = mean(Tmax), TmeanAvg = mean(Tmean), TminAvg = mean(Tmin)) 
+
+# NE1: Station8
+NE1_select_8 <- NE1[[8]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>%  mutate(
+    TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station9
+NE1_select_9 <- NE1[[9]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station10
+NE1_select_10 <- NE1[[10]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+    TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station11
+NE1_select_11 <- NE1[[11]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station12
+NE1_select_12 <- NE1[[12]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station13
+NE1_select_13 <- NE1[[13]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station14
+NE1_select_14 <- NE1[[14]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station15
+NE1_select_15 <- NE1[[15]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station16
+NE1_select_16 <- NE1[[16]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1: Station17
+NE1_select_17 <- NE1[[17]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin)))
+
+# NE1: Station18
+NE1_select_18 <- NE1[[18]] %>% select(station, date, latitude, longitude, elevation, name, monthlymaximumtemperature, monthlymeantemperature, monthlyminimumtemperature) %>% dplyr::rename(Tmax = monthlymaximumtemperature, Tmean = monthlymeantemperature, Tmin = monthlyminimumtemperature) %>% 
+  arrange(Tmax, Tmean, Tmin) %>% filter(Tmean > 0) %>% separate(., "date", c("year", "month"), sep = "-") %>% filter(month == "07") %>% mutate(
+  TmaxAvg = mean(as.numeric(Tmax)), TmeanAvg = mean(as.numeric(Tmean)), TminAvg = mean(as.numeric(Tmin))) 
+
+# NE1 Summary table
+NE1_summary <- rbind(NE1_select_1[1, ], NE1_select_2[1, ], NE1_select_3[1, ], NE1_select_4[1, ], NE1_select_5[1, ], NE1_select_6[1, ], NE1_select_8[1, ], NE1_select_9[1, ], NE1_select_10[1, ], NE1_select_11[1, ], NE1_select_12[1, ], NE1_select_13[1, ], NE1_select_14[1, ], NE1_select_15[1, ], NE1_select_16[1, ], NE1_select_17[1, ], NE1_select_18[1, ]) %>% select(station, name, month, latitude, longitude, elevation, TmaxAvg, TmeanAvg, TminAvg)
 ```
+
+### Make sf object
+```{r}
+NE1_sf <- st_as_sf(NE1_summary, coords = c("latitude", "longitude"))
+```
+
