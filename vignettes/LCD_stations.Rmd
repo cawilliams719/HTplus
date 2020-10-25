@@ -553,7 +553,28 @@ NE1_summary <- rbind(NE1_select_1[1, ], NE1_select_2[1, ], NE1_select_3[1, ], NE
 ```
 
 ### Make sf object
+#### Testing
 ```{r}
-NE1_sf <- st_as_sf(NE1_summary, coords = c("latitude", "longitude"))
+NE1_sf <- st_as_sf(NE1_summary, coords = c("latitude", "longitude"), crs = 5070) 
+
+# Bounding box
+st_bbox(NE1_sf) 
+coords <- cbind("x" = c(40.12028, 41.78570, 41.78570, 40.12028, 40.12028),
+                "y" = c(-80.64722, -80.64722, -73.74220, -73.74220, -80.64722))
+NE1_bbox_sf <- st_polygon(list(coords))
+
+# plot
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(NE1_sf), col = "grey")
+plot(st_geometry(NE1_buffer), add = TRUE)
+
+# buffer
+NE1_buffer <- NE1_sf %>% st_buffer(dist = 495 %>% units::set_units("m"))
+
+# window test
+NE1_window <- lapply(NE1_buffer$geometry, st_bbox) 
+wcoords <- 
+NE1_window_sf <- st_polygon(list(wcoords))
 ```
+
 
