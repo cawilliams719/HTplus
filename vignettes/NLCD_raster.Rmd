@@ -52,14 +52,15 @@ for (i in urls) {
 }
 ```
 
+## Read in Raster
+```{r}
+raster()
+```
+
+
 ## Next Steps
 - Window Analysis
   1. create window around each station
     a. buffer 495 m
     b. Feature envelop to polygon
   2. Extract by Area + Tabulate area for each year
-
-```{r}
-
-```
-

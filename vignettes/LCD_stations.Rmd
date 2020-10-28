@@ -566,15 +566,16 @@ NE1_bbox_sf <- st_polygon(list(coords))
 # plot
 par(mar = c(0, 0, 0, 0))
 plot(st_geometry(NE1_sf), col = "grey")
-plot(st_geometry(NE1_buffer), add = TRUE)
+plot(st_geometry(NE1_window_sf), col = "transparent", add = TRUE)
 
 # buffer
-NE1_buffer <- NE1_sf %>% st_buffer(dist = 495 %>% units::set_units("m"))
+NE1_buffer <- NE1_sf %>% st_transform(crs = 5070) %>% st_buffer(dist = 495) %>% units::set_units("m"))
 
 # window test
 NE1_window <- lapply(NE1_buffer$geometry, st_bbox) 
-wcoords <- 
-NE1_window_sf <- st_polygon(list(wcoords))
+coords_t <- cbind("x" = c(-40.51428, 41.50428, 41.50428, -40.51428, -40.51428),
+                "y" = c(-75.23133, -75.23133, -74.24133, -74.24133, -75.23133))
+NE1_window_sf <- st_polygon(list(coords_t))
 ```
 
 
