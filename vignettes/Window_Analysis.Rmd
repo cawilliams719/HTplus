@@ -1,0 +1,30 @@
+---
+title: "Window Analysis"
+author: "Caroline Williams"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+vignette: >
+  %\VignetteIndexEntry{Window Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Next Steps
+- Window Analysis
+  1. create window around each station
+    a. buffer 495 m
+    b. Feature envelop to polygon
+  2. Extract by Area + Tabulate area for each year
+  
+## Arcpy Testing 
+```{python}
+library(reticulate)
+```
+
