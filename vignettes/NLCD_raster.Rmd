@@ -112,7 +112,7 @@ nlcd_col <- nlcdclassname <-  c('navy','white', 'gray1.2',
     'ltblue')
 
 # plot mean temperature
-plot_noaxes(nlcd_2005_reclass, legend = FALSE, main = "NLCD 2005 Data", col = 
+plot_noaxes(nlcd_2005, legend = FALSE, main = "NLCD 2005 Data", col = 
               nlcd_col,
             mar = c(1, 1, 2, 1))
 legend(x = "right", legend = nlcdclassname, 
