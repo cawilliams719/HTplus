@@ -18,16 +18,18 @@ knitr::opts_chunk$set(echo = TRUE)
 The NLCD is stored as a GeoTIFF with a spatial resolution of 30 by 30 meters. It is projected in North American Continental Albers and formatted as ENVI-header flat binary raster files. Land cover classes include open water (11), perennial ice/ snow (12), developed open space (21), developed low intensity (22), developed med intensity (23), developed high intensity (24), barren (31), deciduous forest (41), evergreen forest (42), mixed forest (43), dwarf scrub (51), shrubland (52), grassland (71), sedge (72), lichens (73), moss (74), pasture (81), rowcrops (82), woody wetlands (90), and emergent wetlands (95) (Kennedy et al., 2018).
 
 ## Download National Land Cover Dataset (NLCD)
-The following code is used to iterate through NLCD data (downloaded from: ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/) .zip files. The for loop downloads each .zip file, unzips it, and deletes the original .zip file folder. This is accomplished for the years 2005 to 2014. The packages FedData, sp, utils, and raster are used.
+The following code is used to iterate through [NLCD data](ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/) .zip files. The for loop downloads each .zip file, unzips it, and deletes the original .zip file folder. This is accomplished for the years 2005 to 2014. The packages FedData, sp, utils, and raster are used.
 
-```{r, eval = FALSE}
+```{r}
 # Load Packages
 library(FedData)
 library(sp)
 library(utils)
 library(raster)
 library(geospaar)
+```
 
+```{r, eval = FALSE}
 # NLCD urls for landcover vote data for 2005 to 2014
 urls <- list("ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/landcover_2005_vote.zip",
              "ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/landcover_2006_vote.zip",
@@ -61,8 +63,21 @@ nlcd_2005 <- raster("D:/data/landcover_2005_vote.tif")
 plot_noaxes(nlcd_2005)
 ```
 
-### Reclass Raster
+## Project and Crop to NE1 Extent
 ```{r}
+NE1_sf <- NE1_sf %>% st_transform(., st_crs(nlcd_2005))
+NE1_sf_tmp <- extent(NE1_sf)
+nlcd_2005_proj <- projectRaster(from = nlcd_2005, res = 1000, crs = crs(NE1_sf), method = "ngb")
+
+# define the spatial extent of the stations
+NE1_extent <- extent(min(NE1_summary$longitude)-10, max(NE1_summary$longitude)+10, min(NE1_summary$latitude)-10, max(NE1_summary$latitude)+10)
+
+# define current and future env. RasterStacks
+temp_2005_crop = crop(nlcd_2005, NE1_extent)
+```
+
+### Reclass Raster
+```{r, eval = FALSE}
 # reclassification matrix
 reclass <- cbind(c(11, 12, 22, 23, 24, 31, 41, 42, 43, 51,
                    52, 71, 72, 73, 74, 81, 82, 90, 95), 1:19)
@@ -118,4 +133,3 @@ plot_noaxes(nlcd_2005, legend = FALSE, main = "NLCD 2005 Data", col =
 legend(x = "right", legend = nlcdclassname, 
        pch = 15, pt.cex = 3, col = nlcd_col, bty = "n")
 ```
-

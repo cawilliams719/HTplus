@@ -15,7 +15,6 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ## Next Steps
 - Window Analysis
   1. create window around each station
@@ -24,7 +23,37 @@ knitr::opts_chunk$set(echo = TRUE)
   2. Extract by Area + Tabulate area for each year
   
 ## Arcpy Testing 
-```{python}
-library(reticulate)
+```{r}
+library(RPyGeo)
+#use_python("C:/Program Files/ArcGIS/Pro/bin/Python/", required = TRUE)
+rpygeo_build_env(path = "C:/Program Files/ArcGIS/Pro/bin/Python/envs/arcgispro-py3/")
 ```
 
+## Import Libraries
+```{r}
+rpygeo_help(arcpy_function = "arcpy.Buffer_analysis")
+```
+
+```{python}
+import arcpy
+from arcpy import env
+```
+
+```{python}
+# set environment
+env.workspace = "C:/Users/Caroline/Documents/Projects/temp"
+
+# buffer 495 m around station points
+arcpy.Buffer_analysis(in_features="LCD_stationpoints", out_feature_class="C:/Users/Caroline/Documents/ArcGIS/Default.gdb/LCD_495buff", buffer_distance_or_field="495 Meters", line_side="FULL", line_end_type="ROUND", dissolve_option="NONE", dissolve_field="", method="PLANAR")
+
+# create window around stations using buffer output
+arcpy.FeatureEnvelopeToPolygon_management(in_features="LCD_495buff", out_feature_class="D:/Honors_Thesis/Data/TemperatureData/lcd_window.shp", single_envelope="SINGLEPART")
+
+# extract by mask for each year
+# D:/data/landcover_2005_vote.tif
+are layers or table views: "US_2005_b1.rst", "lcd_window"
+arcpy.gp.ExtractByMask_sa("US_2005_b1.rst", "lcd_window", "D:/Honors_Thesis/Data/TemperatureData/2005_window")
+
+# tabulate area for each year
+arcpy.TabulateArea(in_zone_data, zone_field, in_class_data, class_field, {out_table}, {processing_cell_size}, {classes_as_rows})
+```

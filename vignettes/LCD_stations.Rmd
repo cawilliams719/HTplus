@@ -554,6 +554,6 @@ NE1_summary <- rbind(NE1_select_1[1, ], NE1_select_2[1, ], NE1_select_3[1, ], NE
 
 ### Make sf object
 ```{r}
-NE1_sf <- st_as_sf(NE1_summary, coords = c("latitude", "longitude"), crs = 5070) 
+NE1_sf <- st_as_sf(NE1_summary, coords = c("longitude", "latitude"), crs = 5070) 
 write_sf(NE1_sf, dsn = "D:/r_outputs/NE1_pts.shp")
 ```
