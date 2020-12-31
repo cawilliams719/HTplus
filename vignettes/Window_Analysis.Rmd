@@ -69,7 +69,17 @@ TabulateArea("D:/python_outputs/NE1_window_raster.tif", "VALUE", "python_outputs
 
 ## plots of python outputs
 ```{r}
+NE1_495buff <- rpygeo_load("D:/python_outputs/NE1_495buff.shp")
+
+NE1_window <- rpygeo_load("D:/python_outputs/NE1_window.shp")
+
+NE1_2005_window <- rpygeo_load("D:/python_outputs/NE1_2005_window.tif")
+
 NE1_window_raster <- rpygeo_load("D:/python_outputs/NE1_window_raster.tif")
+
+plot(NE1_495buff)
+plot(NE1_window)
+plot(NE1_2005_window)
 plot(NE1_window_raster)
 ```
 
