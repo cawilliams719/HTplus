@@ -21,7 +21,7 @@ The NLCD is stored as a GeoTIFF with a spatial resolution of 30 by 30 meters. It
 The following code is used to iterate through [NLCD data](ftp://islay.ceoas.oregonstate.edu/cms/v1/landcover/vote/) .zip files. The for loop downloads each .zip file, unzips it, and deletes the original .zip file folder. This is accomplished for the years 2005 to 2014. The packages FedData, sp, utils, and raster are used.
 
 ```{r}
-# Load Packages
+# Load Libraries
 library(FedData)
 library(sp)
 library(utils)
@@ -56,35 +56,36 @@ for (i in urls) {
 ```
 
 ## Raster Testing
+To do:
+- read in 2006-2014
+- make raster stack 
+- do this for other clusters
+
 ### Read in Raster
 ```{r}
 # read in raw raster image
 nlcd_2005 <- raster("D:/data/landcover_2005_vote.tif")
-plot_noaxes(nlcd_2005)
 ```
 
 ## Project and Crop to NE1 Extent
 ```{r}
+# create sf object of NE1 tibble
+NE1_sf <- st_as_sf(NE1_summary, coords = c("longitude", "latitude"), crs = 4326) 
+
+# reproject to crs of nlcd images
 NE1_sf <- NE1_sf %>% st_transform(., st_crs(nlcd_2005))
-NE1_sf_tmp <- extent(NE1_sf)
-nlcd_2005_proj <- projectRaster(from = nlcd_2005, res = 1000, crs = crs(NE1_sf), method = "ngb")
+
+write_sf(NE1_sf, dsn = "D:/r_outputs/NE1_pts.shp")
 
 # define the spatial extent of the stations
-NE1_extent <- extent(min(NE1_summary$longitude)-10, max(NE1_summary$longitude)+10, min(NE1_summary$latitude)-10, max(NE1_summary$latitude)+10)
+NE1_extent <- extent(NE1_sf)
 
-# define current and future env. RasterStacks
-temp_2005_crop = crop(nlcd_2005, NE1_extent)
+# crop to NE1 extent
+nlcd_2005_crop = crop(nlcd_2005, NE1_extent)
 ```
 
 ### Reclass Raster
-```{r, eval = FALSE}
-# reclassification matrix
-reclass <- cbind(c(11, 12, 22, 23, 24, 31, 41, 42, 43, 51,
-                   52, 71, 72, 73, 74, 81, 82, 90, 95), 1:19)
-
-# reclassify raw landcover data
-nlcd_2005_reclass <- reclassify(x = nlcd_2005, rcl = reclass, include.lowest = TRUE)
-
+```{r}
 # Land cover classes
 nlcdclassname <-  c('Open Water','Perennial Ice/Snow', 'Developed, Open Space',
     'Developed, Low Intensity','Developed, Medium Intensity','Developed High Intensity',
@@ -119,15 +120,14 @@ veryltgreen = rgb(204/255,255/255,205/255)
 medltgreen =  rgb(204/255,255/255,153/255)
 mauve = rgb(153/255,153/255,0/255)
 
-nlcd_col <- nlcdclassname <-  c('navy','white', 'gray1.2',
-    'gray1','gray.8','gray.5',
-    'brown','ltgreen','darkgreen','medgreen',
-    'ltbrown1.2','ltbrown','ltyellow','mauve',
-    'veryltgreen','medltgreen','yellow','magenta','ltblue.8',
-    'ltblue')
+nlcd_col <- c(navy, white, gray1.2,
+    gray1, gray.8, gray.5,
+    brown, ltgreen, darkgreen, medgreen,
+    ltbrown1.2, ltbrown, ltyellow, mauve,
+    veryltgreen, medltgreen, yellow, magenta, ltblue.8, ltblue)
 
 # plot mean temperature
-plot_noaxes(nlcd_2005, legend = FALSE, main = "NLCD 2005 Data", col = 
+plot_noaxes(nlcd_2005_crop, legend = FALSE, main = "NLCD 2005 Data", col = 
               nlcd_col,
             mar = c(1, 1, 2, 1))
 legend(x = "right", legend = nlcdclassname, 

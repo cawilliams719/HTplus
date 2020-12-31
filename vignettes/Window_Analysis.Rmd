@@ -29,31 +29,47 @@ library(RPyGeo)
 rpygeo_build_env(path = "C:/Program Files/ArcGIS/Pro/bin/Python/envs/arcgispro-py3/")
 ```
 
-## Import Libraries
+## Find arcpy functions
 ```{r}
-rpygeo_help(arcpy_function = "arcpy.Buffer_analysis")
+rpygeo_help(arcpy_function = "arcpy.gp.ExtractByMask_sa")
 ```
 
+## Import Libraries
 ```{python}
 import arcpy
 from arcpy import env
+from arcpy.sa import *
 ```
 
+# Set Workspace
 ```{python}
 # set environment
-env.workspace = "C:/Users/Caroline/Documents/Projects/temp"
+env.workspace = "D:/"
+```
 
+# Create Buffer around Stations
+```{python}
 # buffer 495 m around station points
-arcpy.Buffer_analysis(in_features="LCD_stationpoints", out_feature_class="C:/Users/Caroline/Documents/ArcGIS/Default.gdb/LCD_495buff", buffer_distance_or_field="495 Meters", line_side="FULL", line_end_type="ROUND", dissolve_option="NONE", dissolve_field="", method="PLANAR")
+arcpy.Buffer_analysis(in_features = "r_outputs/NE1_pts.shp", out_feature_class = "python_outputs/NE1_495buff.shp", buffer_distance_or_field = "495 Meters", line_side = "FULL", line_end_type = "ROUND", dissolve_option = "NONE", dissolve_field = "", method = "PLANAR")
 
 # create window around stations using buffer output
-arcpy.FeatureEnvelopeToPolygon_management(in_features="LCD_495buff", out_feature_class="D:/Honors_Thesis/Data/TemperatureData/lcd_window.shp", single_envelope="SINGLEPART")
+arcpy.FeatureEnvelopeToPolygon_management(in_features="python_outputs/NE1_495buff.shp", out_feature_class="python_outputs/NE1_window.shp", single_envelope="SINGLEPART")
 
 # extract by mask for each year
-# D:/data/landcover_2005_vote.tif
-are layers or table views: "US_2005_b1.rst", "lcd_window"
-arcpy.gp.ExtractByMask_sa("US_2005_b1.rst", "lcd_window", "D:/Honors_Thesis/Data/TemperatureData/2005_window")
+NE1_2005_window = ExtractByMask("/data/landcover_2005_vote.tif", "/python_outputs/NE1_window.shp")
+
+NE1_2005_window.save("D:/python_outputs/NE1_2005_window.tif")
+
+# Polygon to Raster
+arcpy.conversion.PolygonToRaster("D:/python_outputs/NE1_window.shp", "station", "D:/python_outputs/NE1_window_raster.tif", "CELL_CENTER", "NONE", 30)
 
 # tabulate area for each year
-arcpy.TabulateArea(in_zone_data, zone_field, in_class_data, class_field, {out_table}, {processing_cell_size}, {classes_as_rows})
+TabulateArea("D:/python_outputs/NE1_window_raster.tif", "VALUE", "python_outputs/NE1_2005_window.tif", "VALUE", "D:/python_outputs/area2005.dbf", 30)
 ```
+
+## plots of python outputs
+```{r}
+NE1_window_raster <- rpygeo_load("D:/python_outputs/NE1_window_raster.tif")
+plot(NE1_window_raster)
+```
+
