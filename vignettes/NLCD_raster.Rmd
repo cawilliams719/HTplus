@@ -84,14 +84,17 @@ NE1_extent <- extent(NE1_sf)
 nlcd_2005_crop = crop(nlcd_2005, NE1_extent)
 ```
 
-### Reclass Raster
+## Write cropped rasters
+```{r}
+writeRaster(nlcd_2005_crop, "D:/r_outputs/nlcd_2005_crop.tif")
+```
+
+### Cropped Raster Plot
 ```{r}
 # Land cover classes
-nlcdclassname <-  c('Open Water','Perennial Ice/Snow', 'Developed, Open Space',
+nlcdclassname <-  c('Open Water', 'Developed, Open Space',
     'Developed, Low Intensity','Developed, Medium Intensity','Developed High Intensity',
-    'Barren Land','Deciduous Forest','Evergreen Forest','Mixed Forest',
-    'Dwarf Scrub','Shrub/Scrub','Grassland/Herbaceous','Sedge/Herbaceous',
-    'Lichens','Moss','Pasture/Hay','Cultivated Crops','Woody Wetlands',
+    'Barren Land','Deciduous Forest','Evergreen Forest', 'Shrub/Scrub','Grassland/Herbaceous','Pasture/Hay','Cultivated Crops','Woody Wetlands',
     'Emergent Herbaceous Wetlands')
 
 # Defining Colors
@@ -120,11 +123,9 @@ veryltgreen = rgb(204/255,255/255,205/255)
 medltgreen =  rgb(204/255,255/255,153/255)
 mauve = rgb(153/255,153/255,0/255)
 
-nlcd_col <- c(navy, white, gray1.2,
+nlcd_col <- c(navy, gray1.2,
     gray1, gray.8, gray.5,
-    brown, ltgreen, darkgreen, medgreen,
-    ltbrown1.2, ltbrown, ltyellow, mauve,
-    veryltgreen, medltgreen, yellow, magenta, ltblue.8, ltblue)
+    brown, ltgreen, darkgreen, ltbrown, ltyellow, yellow, magenta, ltblue.8, ltblue)
 
 # plot mean temperature
 plot_noaxes(nlcd_2005_crop, legend = FALSE, main = "NLCD 2005 Data", col = 

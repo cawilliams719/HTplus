@@ -15,22 +15,14 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Next Steps
-- Window Analysis
-  1. create window around each station
-    a. buffer 495 m
-    b. Feature envelop to polygon
-  2. Extract by Area + Tabulate area for each year
-  
 ## Arcpy Testing 
 ```{r}
 library(RPyGeo)
-#use_python("C:/Program Files/ArcGIS/Pro/bin/Python/", required = TRUE)
 rpygeo_build_env(path = "C:/Program Files/ArcGIS/Pro/bin/Python/envs/arcgispro-py3/")
 ```
 
 ## Find arcpy functions
-```{r}
+```{r, eval = FALSE}
 rpygeo_help(arcpy_function = "arcpy.gp.ExtractByMask_sa")
 ```
 
@@ -41,10 +33,16 @@ from arcpy import env
 from arcpy.sa import *
 ```
 
-# Set Workspace
+# Set Environment
 ```{python}
-# set environment
+# set workspace
 env.workspace = "D:/"
+
+# set, extent, coordinate system, and overwrite options
+env.extent = r"D:/r_outputs/nlcd_2005_crop.tif"
+env.outputCoordinateSystem = r"r_outputs/NE1_pts.shp"
+env.snapRaster = r"D:/r_outputs/nlcd_2005_crop.tif"
+env.overwriteOutput = "TRUE"
 ```
 
 # Create Buffer around Stations
@@ -55,19 +53,23 @@ arcpy.Buffer_analysis(in_features = "r_outputs/NE1_pts.shp", out_feature_class =
 # create window around stations using buffer output
 arcpy.FeatureEnvelopeToPolygon_management(in_features="python_outputs/NE1_495buff.shp", out_feature_class="python_outputs/NE1_window.shp", single_envelope="SINGLEPART")
 
+# Polygon to Raster
+arcpy.conversion.PolygonToRaster("D:/python_outputs/NE1_window.shp", "ORIG_FID", "D:/python_outputs/NE1_window_raster.tif", "CELL_CENTER", "NONE", 30)
+
 # extract by mask for each year
-NE1_2005_window = ExtractByMask("/data/landcover_2005_vote.tif", "/python_outputs/NE1_window.shp")
+NE1_2005_window = ExtractByMask("/data/landcover_2005_vote.tif", "D:/python_outputs/NE1_window_raster.tif")
 
 NE1_2005_window.save("D:/python_outputs/NE1_2005_window.tif")
 
-# Polygon to Raster
-arcpy.conversion.PolygonToRaster("D:/python_outputs/NE1_window.shp", "station", "D:/python_outputs/NE1_window_raster.tif", "CELL_CENTER", "NONE", 30)
+# convert
+outInt = Int("D:/python_outputs/NE1_window_raster.tif")
+outInt.save("D:/python_outputs/NE1_window_raster_int.tif")
 
 # tabulate area for each year
-TabulateArea("D:/python_outputs/NE1_window_raster.tif", "VALUE", "python_outputs/NE1_2005_window.tif", "VALUE", "D:/python_outputs/area2005.dbf", 30)
+TabulateArea("D:/python_outputs/NE1_window_raster.tif", "VALUE", "D:/python_outputs/NE1_2005_window.tif", "VALUE", "D:/python_outputs/area2005..csv", 30)
 ```
 
-## plots of python outputs
+## Load python outputs
 ```{r}
 NE1_495buff <- rpygeo_load("D:/python_outputs/NE1_495buff.shp")
 
@@ -77,9 +79,34 @@ NE1_2005_window <- rpygeo_load("D:/python_outputs/NE1_2005_window.tif")
 
 NE1_window_raster <- rpygeo_load("D:/python_outputs/NE1_window_raster.tif")
 
-plot(NE1_495buff)
-plot(NE1_window)
-plot(NE1_2005_window)
-plot(NE1_window_raster)
+area2005 <- foreign::read.dbf("D:/python_outputs/area2005.dbf")
 ```
 
+## Sort data
+```{r}
+area2005 <- area2005 %>% rename(ORIG_FID = VALUE)
+```
+
+## Join Tables by Clusters
+```{r}
+NE1_cluster <- dplyr::full_join(NE1_window, area2005, by = "ORIG_FID")
+```
+
+## Rename Columns
+```{r}
+NE1_cluster <- NE1_cluster %>% rename(
+  open_water = VALUE_11, 
+  deve_open = VALUE_21, 
+  deve_low = VALUE_22, 
+  deve_med = VALUE_23, 
+  deve_high = VALUE_24, 
+  barren = VALUE_31, 
+  decid_for = VALUE_41, 
+  ever_for = VALUE_42, 
+  scrub = VALUE_52, 
+  grassland = VALUE_71, 
+  pasture = VALUE_81, 
+  crop = VALUE_82, 
+  woody_wet = VALUE_90, 
+  emer_herb_wet = VALUE_95)
+```
