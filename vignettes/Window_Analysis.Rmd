@@ -110,3 +110,36 @@ NE1_cluster <- NE1_cluster %>% rename(
   woody_wet = VALUE_90, 
   emer_herb_wet = VALUE_95)
 ```
+
+## Calculate %
+```{r}
+# calculate total area and lc percent
+NE1_cluster <- NE1_cluster %>% 
+  mutate(area_m = (open_water + deve_open +
+                     deve_low + 
+        deve_med + deve_high + barren + 
+        decid_for + ever_for + scrub + 
+        grassland + pasture + crop + 
+        woody_wet + emer_herb_wet)) %>% mutate(
+  water_perc = (open_water / area_m) * 100,
+  deve_open_perc = (deve_open / area_m) * 100, 
+  deve_low_perc = (deve_low / area_m) * 100, 
+  deve_med_perc = (deve_med / area_m) * 100, 
+  deve_high_perc = (deve_high / area_m) * 100, 
+  barren_perc = (barren / area_m) * 100, 
+  decid_for_perc = (decid_for / area_m) * 100, 
+  ever_for_perc = (ever_for / area_m) * 100, 
+  scrub_perc = (scrub / area_m) * 100, 
+  grass_perc = (grassland / area_m) * 100, 
+  pasture_perc = (pasture / area_m) * 100, 
+  crop_perc = (crop / area_m) * 100, 
+  woody_wet_perc = (woody_wet / area_m) * 100, 
+  emerherbwet_perc = (emer_herb_wet / area_m) * 100)
+
+NE1_map <- NE1_cluster %>% mutate(fc_perc = (decid_for_perc + ever_for_perc) / 2)
+```
+
+To Do:
+- repeat process for 2006 to 2014 and average land cover at stations over time
+  - temperature is already averaged
+- then repeat for remaining clusters

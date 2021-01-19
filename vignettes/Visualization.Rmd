@@ -1,0 +1,72 @@
+---
+title: "Visualization"
+author: "Caroline Williams"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+    highlight: github
+vignette: >
+  %\VignetteIndexEntry{Visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Import Libraries
+```{r}
+library(ggplot2)
+library(cowplot)
+```
+
+## NE1 Sample plot
+- not final but demo of output
+- features averaged temperature but not average land cover
+- will be updated later with correct output
+
+```{r}
+r1 <- ggplot(NE1_map) + 
+  geom_point(mapping = aes(
+    x = fc_perc, y = TminAvg), col = "blue") + 
+  geom_smooth(method = 'lm', mapping = aes(
+    x = fc_perc, y = TminAvg), col = "blue") + 
+  ggpubr::stat_cor(data = NE1_map, mapping =aes(
+    x = fc_perc, y = TminAvg), col = "black", label.x = 0.15, label.y = 60) +
+  ggpubr::stat_regline_equation(mapping = aes(
+    x = fc_perc, y = TminAvg), col = "black", label.x = 0.17, label.y = 58) +
+  xlab("Forest Cover (%)") +
+  ylab("Temperature (°F)") + 
+  ggtitle("Tmin")
+
+r2 <- ggplot(NE1_map) + 
+  geom_point(mapping = aes(
+    x = fc_perc, y = TmeanAvg), col = "blue") + 
+  geom_smooth(method = 'lm', mapping = aes(
+    x = fc_perc, y = TmeanAvg), col = "blue") + 
+  ggpubr::stat_cor(data = NE1_map, mapping =aes(
+    x = fc_perc, y = TmeanAvg), col = "black", label.x = 0.15, label.y = 70) +
+  ggpubr::stat_regline_equation(mapping = aes(
+    x = fc_perc, y = TmeanAvg), col = "black", label.x = 0.17, label.y = 69.2) +
+  xlab("Forest Cover (%)") +
+  ylab("Temperature (°F)") + 
+  ggtitle("Tmean")
+
+r3 <- ggplot(NE1_map) + 
+  geom_point(mapping = aes(
+    x = fc_perc, y = TmaxAvg), col = "blue") + 
+  geom_smooth(method = 'lm', mapping = aes(
+    x = fc_perc, y = TmaxAvg), col = "blue") + 
+  ggpubr::stat_cor(data = NE1_map, mapping =aes(
+    x = fc_perc, y = TmaxAvg), col = "black", label.x = 0.15, label.y = 80) +
+  ggpubr::stat_regline_equation(mapping = aes(
+    x = fc_perc, y = TmaxAvg), col = "black", label.x = 0.17, label.y = 79.2) +
+  xlab("Forest Cover (%)") +
+  ylab("Temperature (°F)") + 
+  ggtitle("Tmax")
+
+plot_grid(r1, r2, r3,
+          nrow = 1, ncol = 3, labels = "AUTO")
+```
+
